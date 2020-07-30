@@ -1,4 +1,4 @@
-package fi.eriran.twosum;
+package fi.eriran.nsum;
 
 import org.junit.Test;
 
