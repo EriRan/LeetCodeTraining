@@ -30,8 +30,8 @@ public class ThreeSumTest {
         assertFalse(CollectionUtils.isEmpty(response));
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testLength2NotAllowed() {
-        new ThreeSum().threeSum(new int[]{-1, 0});
+    @Test
+    public void testLength2ReturnsEmpty() {
+        assertTrue(CollectionUtils.isEmpty(new ThreeSum().threeSum(new int[]{-1, 0})));
     }
 }
