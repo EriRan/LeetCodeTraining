@@ -8,7 +8,7 @@
   <artifactId>LeetCode</artifactId>
   <version>1.0-SNAPSHOT</version>
 
-  <name>LeetCode</name>
+  <name>Leet Code Training</name>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
