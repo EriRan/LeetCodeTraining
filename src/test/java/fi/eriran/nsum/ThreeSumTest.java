@@ -1,15 +1,15 @@
 package fi.eriran.nsum;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 public class ThreeSumTest {
-
 
     @Test
     public void testExample() {
