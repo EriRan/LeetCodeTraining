@@ -1,7 +1,6 @@
 package fi.eriran.nsum;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Given an array nums of n integers, are there elements a, b, c in nums such that a + b + c = 0? Find all unique
@@ -21,56 +20,33 @@ public class ThreeSum {
 
     private List<List<Integer>> findUniqueTriplets(int[] nums) {
         Arrays.sort(nums);
-        Set<Triplet> foundTriplets = new TreeSet<>();
+        List<List<Integer>> response = new ArrayList<>();
+        Integer previousValue = null;
         for (int i = 0; i < nums.length; i++) {
-            twoSum(nums, nums[i], i + 1, foundTriplets);
+            if (previousValue != null && nums[i] == previousValue) {
+                continue;
+            }
+            response.addAll(twoSum(nums, nums[i], i + 1));
+            previousValue = nums[i];
         }
-        return convertToListResponse(foundTriplets);
+        return response;
     }
 
-    public void twoSum(int[] nums, int target, int startPoint, Set<Triplet> foundTriplets) {
-        for (int i = startPoint; i < nums.length - 1; i++) {
-            for (int j = nums.length - 1; j > startPoint && j > i; j--) {
-                if (nums[i] + nums[j] + target == 0) {
-                    //foundTriplets is a set to only unique triplets are added
-                    Triplet triplet = new Triplet(target, nums[i], nums[j]);
-                    foundTriplets.add(triplet);
+    public List<List<Integer>> twoSum(int[] nums, int target, int startPoint) {
+        List<List<Integer>> twoSumTriplets = new ArrayList<>();
+        Integer previousLeftNumber = null;
+        for (int leftNumber = startPoint; leftNumber < nums.length - 1; leftNumber++) {
+            if (previousLeftNumber != null && previousLeftNumber == nums[leftNumber]) {
+                continue;
+            }
+            for (int rightNumber = nums.length - 1; rightNumber > startPoint && rightNumber > leftNumber; rightNumber--) {
+                if (nums[leftNumber] + nums[rightNumber] + target == 0) {
+                    twoSumTriplets.add(Arrays.asList(target, nums[leftNumber], nums[rightNumber]));
                     break;
                 }
             }
+            previousLeftNumber = nums[leftNumber];
         }
-    }
-
-    private List<List<Integer>> convertToListResponse(Set<Triplet> foundTriplets) {
-        return foundTriplets.stream()
-                .map(triplet -> Arrays.asList(triplet.one, triplet.two, triplet.three))
-                .collect(Collectors.toList());
-    }
-
-    static class Triplet implements Comparable<Triplet> {
-        public final int one;
-        public final int two;
-        public final int three;
-
-        public Triplet(int one, int two, int three) {
-            List<Integer> tripletNumbers = Arrays.asList(one, two, three);
-            tripletNumbers.sort(Integer::compareTo);
-            this.one = tripletNumbers.get(0);
-            this.two = tripletNumbers.get(1);
-            this.three = tripletNumbers.get(2);
-        }
-
-        @Override
-        public int compareTo(Triplet o) {
-            int oneComparison = Integer.compare(this.one, o.one);
-            if (oneComparison != 0) {
-                return oneComparison;
-            }
-            int twoComparison = Integer.compare(this.two, o.two);
-            if (twoComparison != 0) {
-                return twoComparison;
-            }
-            return Integer.compare(this.three, this.three);
-        }
+        return twoSumTriplets;
     }
 }
