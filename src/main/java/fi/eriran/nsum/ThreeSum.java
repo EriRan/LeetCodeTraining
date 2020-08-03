@@ -20,33 +20,73 @@ public class ThreeSum {
 
     private List<List<Integer>> findUniqueTriplets(int[] nums) {
         Arrays.sort(nums);
-        List<List<Integer>> response = new ArrayList<>();
+        Set<List<Integer>> foundTriplets = new HashSet<>();
+        Map<Integer, List<Integer>> hashMap = createHashMap(nums);
         Integer previousValue = null;
         for (int i = 0; i < nums.length; i++) {
             if (previousValue != null && nums[i] == previousValue) {
                 continue;
             }
-            response.addAll(twoSum(nums, nums[i], i + 1));
+            foundTriplets.addAll(twoSum(nums, nums[i], i, hashMap));
             previousValue = nums[i];
         }
-        return response;
+        return new ArrayList<>(foundTriplets);
     }
 
-    public List<List<Integer>> twoSum(int[] nums, int target, int startPoint) {
+    private List<List<Integer>> twoSum(int[] nums, int target, int leftNumber, Map<Integer, List<Integer>> hashMap) {
         List<List<Integer>> twoSumTriplets = new ArrayList<>();
-        Integer previousLeftNumber = null;
-        for (int leftNumber = startPoint; leftNumber < nums.length - 1; leftNumber++) {
-            if (previousLeftNumber != null && previousLeftNumber == nums[leftNumber]) {
+        Integer previousRightNumber = null;
+        for (int rightNumber = nums.length - 1; rightNumber > leftNumber + 1; rightNumber--) {
+            if (previousRightNumber != null && previousRightNumber == nums[rightNumber]) {
                 continue;
             }
-            for (int rightNumber = nums.length - 1; rightNumber > startPoint && rightNumber > leftNumber; rightNumber--) {
-                if (nums[leftNumber] + nums[rightNumber] + target == 0) {
-                    twoSumTriplets.add(Arrays.asList(target, nums[leftNumber], nums[rightNumber]));
-                    break;
-                }
+            Integer requiredNumber = -(nums[rightNumber] + target);
+            Integer optionalRequiredValue = getRequiredValueIfAvailable(requiredNumber, leftNumber, rightNumber, hashMap);
+            if (optionalRequiredValue != null) {
+                twoSumTriplets.add(createSortedTriplet(target, requiredNumber, nums[rightNumber]));
             }
-            previousLeftNumber = nums[leftNumber];
+            previousRightNumber = nums[rightNumber];
         }
         return twoSumTriplets;
+    }
+
+    /**
+     * Map of values and indexes they appear in
+     */
+    private Map<Integer, List<Integer>> createHashMap(int[] nums) {
+        Map<Integer, List<Integer>> hashMap = new HashMap<>();
+        for (int i = 0; i < nums.length; i++) {
+            List<Integer> indexesThatContainValue = hashMap.get(nums[i]);
+            if (indexesThatContainValue == null) {
+                indexesThatContainValue = new ArrayList<>();
+                indexesThatContainValue.add(i);
+                hashMap.put(nums[i], indexesThatContainValue);
+            } else {
+                indexesThatContainValue.add(i);
+            }
+
+        }
+        return hashMap;
+    }
+
+    private List<Integer> createSortedTriplet(int numberOne, Integer numberTwo, int numberThree) {
+        List<Integer> newTriplet = Arrays.asList(numberOne, numberTwo, numberThree);
+        newTriplet.sort(Integer::compareTo);
+        return newTriplet;
+    }
+
+    private Integer getRequiredValueIfAvailable(Integer requiredNumber,
+                                                int target,
+                                                int rightNumber,
+                                                Map<Integer, List<Integer>> hashMap) {
+        List<Integer> potentialIndexes = hashMap.get(requiredNumber);
+        if (potentialIndexes != null) {
+            for (Integer potentialIndex : potentialIndexes) {
+                if (potentialIndex != target && potentialIndex != rightNumber) {
+                    return potentialIndex;
+                }
+            }
+        }
+        return null;
     }
 }
