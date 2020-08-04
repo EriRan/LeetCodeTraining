@@ -21,19 +21,22 @@ public class ThreeSum {
     private List<List<Integer>> findUniqueTriplets(int[] nums) {
         Arrays.sort(nums);
         Set<List<Integer>> foundTriplets = new HashSet<>();
-        Map<Integer, List<Integer>> hashMap = createHashMap(nums);
+        Map<Integer, List<Integer>> valueIndexesMap = createHashMap(nums);
         Integer previousValue = null;
-        for (int i = 0; i < nums.length; i++) {
-            if (previousValue != null && nums[i] == previousValue) {
+        for (int leftNumber = 0; leftNumber < nums.length; leftNumber++) {
+            if (previousValue != null && nums[leftNumber] == previousValue) {
                 continue;
             }
-            foundTriplets.addAll(twoSum(nums, nums[i], i, hashMap));
-            previousValue = nums[i];
+            foundTriplets.addAll(twoSum(nums, nums[leftNumber], leftNumber, valueIndexesMap));
+            previousValue = nums[leftNumber];
         }
         return new ArrayList<>(foundTriplets);
     }
 
-    private List<List<Integer>> twoSum(int[] nums, int target, int leftNumber, Map<Integer, List<Integer>> hashMap) {
+    private List<List<Integer>> twoSum(int[] nums,
+                                       int target,
+                                       int leftNumber,
+                                       Map<Integer, List<Integer>> valueIndexesMap) {
         List<List<Integer>> twoSumTriplets = new ArrayList<>();
         Integer previousRightNumber = null;
         for (int rightNumber = nums.length - 1; rightNumber > leftNumber + 1; rightNumber--) {
@@ -41,8 +44,7 @@ public class ThreeSum {
                 continue;
             }
             Integer requiredNumber = -(nums[rightNumber] + target);
-            Integer optionalRequiredValue = getRequiredValueIfAvailable(requiredNumber, leftNumber, rightNumber, hashMap);
-            if (optionalRequiredValue != null) {
+            if (isRequiredNumberAvailable(requiredNumber, leftNumber, rightNumber, valueIndexesMap)) {
                 twoSumTriplets.add(createSortedTriplet(target, requiredNumber, nums[rightNumber]));
             }
             previousRightNumber = nums[rightNumber];
@@ -75,18 +77,18 @@ public class ThreeSum {
         return newTriplet;
     }
 
-    private Integer getRequiredValueIfAvailable(Integer requiredNumber,
-                                                int target,
-                                                int rightNumber,
-                                                Map<Integer, List<Integer>> hashMap) {
+    private boolean isRequiredNumberAvailable(Integer requiredNumber,
+                                              int target,
+                                              int rightNumber,
+                                              Map<Integer, List<Integer>> hashMap) {
         List<Integer> potentialIndexes = hashMap.get(requiredNumber);
         if (potentialIndexes != null) {
             for (Integer potentialIndex : potentialIndexes) {
                 if (potentialIndex != target && potentialIndex != rightNumber) {
-                    return potentialIndex;
+                    return true;
                 }
             }
         }
-        return null;
+        return false;
     }
 }
