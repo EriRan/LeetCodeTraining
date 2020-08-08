@@ -13,27 +13,49 @@ import java.util.*;
 public class FourSum {
 
     public List<List<Integer>> fourSum(int[] nums, int target) {
+        return findQuadruplets(
+                target,
+                buildAuxiliary(createSortedCopy(nums)));
+    }
+
+    private int[] createSortedCopy(int[] nums) {
         int[] numsCopy = Arrays.copyOf(nums, nums.length);
         Arrays.sort(numsCopy);
-
-        return findQuadruplets(target, buildAuxiliary(numsCopy));
+        return numsCopy;
     }
 
     private List<Pair> buildAuxiliary(int[] numsCopy) {
         List<Pair> auxiliary = new ArrayList<>();
+        Integer previousI = null;
+        Integer previousJ = null;
         for (int i = 0; i < numsCopy.length; i++) {
-            for (int j = i + 1; j < numsCopy.length; j++) {
-                auxiliary.add(new Pair(numsCopy[i], numsCopy[j], i, j));
+            if (previousI != null && previousI == i) {
+                continue;
             }
+            for (int j = numsCopy.length - 1; j > i; j--) {
+                if (previousJ != null && previousJ == j) {
+                    continue;
+                }
+                auxiliary.add(new Pair(numsCopy[i], numsCopy[j], i, j));
+                previousJ = j;
+            }
+            previousI = i;
         }
         return auxiliary;
     }
 
     private ArrayList<List<Integer>> findQuadruplets(int target, List<Pair> auxiliary) {
+        if (auxiliary == null || auxiliary.isEmpty()) {
+            return new ArrayList<>();
+        }
         Set<List<Integer>> foundQuadruplets = new HashSet<>();
+        Integer previousSumOne = null;
         for (int i = 0; i < auxiliary.size(); i++) {
             Pair pairOne = auxiliary.get(i);
-            for (int j = i + 1; j < auxiliary.size(); j++) {
+            if (previousSumOne != null && previousSumOne == pairOne.sum) {
+                continue;
+            }
+            for (int j = auxiliary.size() - 1; j > i; j--) {
                 Pair pairTwo = auxiliary.get(j);
                 if (pairsAreUsingSameIndexes(pairOne, pairTwo)) {
                     continue;
@@ -48,6 +70,7 @@ public class FourSum {
                     foundQuadruplets.add(potentialQuadruplet);
                 }
             }
+            previousSumOne = pairOne.sum;
         }
         return new ArrayList<>(foundQuadruplets);
     }
