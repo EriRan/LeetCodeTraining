@@ -14,42 +14,42 @@ public class FourSumII {
     public int fourSumCount(int[] a, int[] b, int[] c, int[] d) {
         validateInput(a, b, c, d);
         return findQuadruplets(
-                createAuxiliaryCollection(a, b),
-                createAuxiliaryCollection(c, d));
+                createAuxiliaryList(a, b),
+                createAuxiliaryList(c, d));
     }
 
-    private Collection<Integer> createAuxiliaryCollection(int[] arrayOne, int[] arrayTwo) {
-        Collection<Integer> sumCollection = new ArrayList<>();
+    private List<Integer> createAuxiliaryList(int[] arrayOne, int[] arrayTwo) {
+        List<Integer> sumList = new ArrayList<>();
         for (int j : arrayOne) {
             for (int k : arrayTwo) {
-                sumCollection.add(j + k);
+                sumList.add(j + k);
             }
         }
-        return sumCollection;
+        return sumList;
     }
 
     /**
      * Set to just store the fact if a sum is contained in the two arrays. It is faster to search from a set than to
-     * iterate a whole collection
+     * iterate a whole List
      */
     private Set<Integer> createAuxiliarySet(int[] arrayOne, int[] arrayTwo) {
-        Set<Integer> sumCollection = new HashSet<>();
+        Set<Integer> sumList = new HashSet<>();
         for (int i : arrayOne) {
             for (int j : arrayTwo) {
-                sumCollection.add(i + j);
+                sumList.add(i + j);
             }
         }
-        return sumCollection;
+        return sumList;
     }
 
-    private int findQuadruplets(Collection<Integer> abAuxiliaryCollection,
-                                Collection<Integer> cdAuxiliaryCollection) {
-        if (abAuxiliaryCollection == null || abAuxiliaryCollection.isEmpty()) {
+    private int findQuadruplets(List<Integer> abAuxiliaryList,
+                                List<Integer> cdAuxiliaryList) {
+        if (abAuxiliaryList == null || abAuxiliaryList.isEmpty()) {
             return 0;
         }
         int foundQuadruplets = 0;
-        for (Integer abSum : abAuxiliaryCollection) {
-            for (Integer cdSum : cdAuxiliaryCollection) {
+        for (Integer abSum : abAuxiliaryList) {
+            for (Integer cdSum : cdAuxiliaryList) {
                 if (abSum + cdSum == 0) {
                     foundQuadruplets++;
                 }
@@ -58,7 +58,7 @@ public class FourSumII {
         return foundQuadruplets;
     }
 
-    private boolean containsTargetValue(Collection<Integer> cdAuxiliary, Integer abSum) {
+    private boolean containsTargetValue(List<Integer> cdAuxiliary, Integer abSum) {
         return cdAuxiliary.contains(-abSum);
     }
 
