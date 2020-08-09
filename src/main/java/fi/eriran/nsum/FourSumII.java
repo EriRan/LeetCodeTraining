@@ -39,8 +39,8 @@ public class FourSumII {
             return new ArrayList<>();
         }
         primaryAuxiliary.sort(Integer::compareTo);
-        int min = primaryAuxiliary.get(primaryAuxiliary.size() - 1);
-        int max = primaryAuxiliary.get(0);
+        int min = primaryAuxiliary.get(0);
+        int max = primaryAuxiliary.get(primaryAuxiliary.size() - 1);
         List<Integer> sumList = new ArrayList<>();
         for (int j : arrayOne) {
             for (int k : arrayTwo) {
