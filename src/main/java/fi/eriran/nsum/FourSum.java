@@ -15,53 +15,47 @@ public class FourSum {
     public List<List<Integer>> fourSum(int[] nums, int target) {
         return findQuadruplets(
                 target,
-                buildAuxiliary(createSortedCopy(nums)));
+                buildAuxiliary(Arrays.copyOf(nums, nums.length)));
     }
 
-    private int[] createSortedCopy(int[] nums) {
-        int[] numsCopy = Arrays.copyOf(nums, nums.length);
-        Arrays.sort(numsCopy);
-        return numsCopy;
-    }
-
-    private List<Pair> buildAuxiliary(int[] numsCopy) {
-        List<Pair> auxiliary = new ArrayList<>();
+    private Map<Integer, List<Pair>> buildAuxiliary(int[] numsCopy) {
+        Map<Integer, List<Pair>> auxiliary = new HashMap<>();
         for (int i = 0; i < numsCopy.length; i++) {
             for (int j = numsCopy.length - 1; j > i; j--) {
-                auxiliary.add(new Pair(numsCopy[i], numsCopy[j], i, j));
+                int sum = numsCopy[i] + numsCopy[j];
+                List<Pair> pairsOfSum = auxiliary.computeIfAbsent(sum, integer -> new ArrayList<>());
+                pairsOfSum.add(new Pair(numsCopy[i], numsCopy[j], i, j));
             }
         }
         return auxiliary;
     }
 
-    private ArrayList<List<Integer>> findQuadruplets(int target, List<Pair> auxiliary) {
+    private ArrayList<List<Integer>> findQuadruplets(int target, Map<Integer, List<Pair>> auxiliary) {
         if (auxiliary == null || auxiliary.isEmpty()) {
             return new ArrayList<>();
         }
         Set<List<Integer>> foundQuadruplets = new HashSet<>();
-        Integer previousSumOne = null;
-        for (int i = 0; i < auxiliary.size(); i++) {
-            Pair pairOne = auxiliary.get(i);
-            if (previousSumOne != null && previousSumOne == pairOne.sum) {
-                continue;
-            }
-            for (int j = auxiliary.size() - 1; j > i; j--) {
-                Pair pairTwo = auxiliary.get(j);
-                if (pairsAreUsingSameIndexes(pairOne, pairTwo)) {
-                    continue;
-                }
-                if (pairOne.sum + pairTwo.sum == target) {
-                    List<Integer> potentialQuadruplet = Arrays.asList(
-                            pairOne.firstValue,
-                            pairOne.secondValue,
-                            pairTwo.firstValue,
-                            pairTwo.secondValue);
-                    potentialQuadruplet.sort(Integer::compareTo);
-                    foundQuadruplets.add(potentialQuadruplet);
-                }
-            }
-            previousSumOne = pairOne.sum;
-        }
+        Set<Map.Entry<Integer, List<Pair>>> entries = auxiliary.entrySet();
+        entries.forEach(entry ->
+                entry.getValue()
+                        .forEach(iteratedPair -> {
+                            int requiredSum = target - entry.getKey();
+                            List<Pair> pairsWithRequiredSum = auxiliary.get(requiredSum);
+                            if (pairsWithRequiredSum == null) {
+                                return;
+                            }
+                            pairsWithRequiredSum.stream()
+                                    .filter(potentialPair -> !pairsAreUsingSameIndexes(iteratedPair, potentialPair))
+                                    .forEach(validPair -> {
+                                        List<Integer> potentialQuadruplet = Arrays.asList(
+                                                iteratedPair.firstValue,
+                                                iteratedPair.secondValue,
+                                                validPair.firstValue,
+                                                validPair.secondValue);
+                                        potentialQuadruplet.sort(Integer::compareTo);
+                                        foundQuadruplets.add(potentialQuadruplet);
+                                    });
+                        }));
         return new ArrayList<>(foundQuadruplets);
     }
 
@@ -77,14 +71,12 @@ public class FourSum {
         final int secondValue;
         final int firstIndex;
         final int secondIndex;
-        final int sum;
 
         public Pair(int firstValue, int secondValue, int firstIndex, int secondIndex) {
             this.firstValue = firstValue;
             this.secondValue = secondValue;
             this.firstIndex = firstIndex;
             this.secondIndex = secondIndex;
-            sum = firstValue + secondValue;
         }
     }
 }
