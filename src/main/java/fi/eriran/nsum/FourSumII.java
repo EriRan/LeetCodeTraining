@@ -15,18 +15,39 @@ public class FourSumII {
 
     public int fourSumCount(int[] a, int[] b, int[] c, int[] d) {
         validateInput(a, b, c, d);
+        List<Integer> abAuxiliary = createPrimaryAuxiliaryList(a, b);
+        List<Integer> cdAuxiliary = createSecondaryAuxiliaryList(c,d, abAuxiliary);
         return findQuadruplets(
-                createAuxiliaryList(a, b),
-                createAuxiliaryList(c, d)
+                abAuxiliary,
+                cdAuxiliary
         );
     }
 
-    private List<Integer> createAuxiliaryList(int[] arrayOne,
-                                              int[] arrayTwo) {
+    private List<Integer> createPrimaryAuxiliaryList(int[] arrayOne,
+                                                     int[] arrayTwo) {
         List<Integer> sumList = new ArrayList<>();
         for (int j : arrayOne) {
             for (int k : arrayTwo) {
                 sumList.add(j + k);
+            }
+        }
+        return sumList;
+    }
+
+    private List<Integer> createSecondaryAuxiliaryList(int[] arrayOne, int[] arrayTwo, List<Integer> primaryAuxiliary) {
+        if (primaryAuxiliary == null || primaryAuxiliary.isEmpty()) {
+            return new ArrayList<>();
+        }
+        primaryAuxiliary.sort(Integer::compareTo);
+        int min = primaryAuxiliary.get(primaryAuxiliary.size() - 1);
+        int max = primaryAuxiliary.get(0);
+        List<Integer> sumList = new ArrayList<>();
+        for (int j : arrayOne) {
+            for (int k : arrayTwo) {
+                int sum = j + k;
+                if (sum >= min || sum <= max) {
+                    sumList.add(sum);
+                }
             }
         }
         return sumList;
