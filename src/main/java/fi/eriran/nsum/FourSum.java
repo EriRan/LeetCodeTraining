@@ -18,13 +18,13 @@ public class FourSum {
                 buildAuxiliary(Arrays.copyOf(nums, nums.length)));
     }
 
-    private Map<Integer, List<Pair>> buildAuxiliary(int[] numsCopy) {
+    private Map<Integer, List<Pair>> buildAuxiliary(int[] nums) {
         Map<Integer, List<Pair>> auxiliary = new HashMap<>();
-        for (int i = 0; i < numsCopy.length; i++) {
-            for (int j = numsCopy.length - 1; j > i; j--) {
-                int sum = numsCopy[i] + numsCopy[j];
+        for (int i = 0; i < nums.length; i++) {
+            for (int j = nums.length - 1; j > i; j--) {
+                int sum = nums[i] + nums[j];
                 List<Pair> pairsOfSum = auxiliary.computeIfAbsent(sum, integer -> new ArrayList<>());
-                pairsOfSum.add(new Pair(numsCopy[i], numsCopy[j], i, j));
+                pairsOfSum.add(new Pair(nums[i], nums[j], i, j));
             }
         }
         return auxiliary;
