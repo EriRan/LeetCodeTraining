@@ -14,48 +14,52 @@ public class FourSumII {
     public int fourSumCount(int[] a, int[] b, int[] c, int[] d) {
         validateInput(a, b, c, d);
         return findQuadruplets(
-                createAuxiliary(a, b),
-                createAuxiliary(c, d));
+                createAuxiliaryCollection(a, b),
+                createAuxiliaryCollection(c, d));
     }
 
-    private int findQuadruplets(Map<Integer, List<Pair>> abAuxiliary,
-                                Map<Integer, List<Pair>> cdAuxiliary) {
-        if (abAuxiliary == null || abAuxiliary.isEmpty()) {
+    private Collection<Integer> createAuxiliaryCollection(int[] arrayOne, int[] arrayTwo) {
+        Collection<Integer> sumCollection = new ArrayList<>();
+        for (int j : arrayOne) {
+            for (int k : arrayTwo) {
+                sumCollection.add(j + k);
+            }
+        }
+        return sumCollection;
+    }
+
+    /**
+     * Set to just store the fact if a sum is contained in the two arrays. It is faster to search from a set than to
+     * iterate a whole collection
+     */
+    private Set<Integer> createAuxiliarySet(int[] arrayOne, int[] arrayTwo) {
+        Set<Integer> sumCollection = new HashSet<>();
+        for (int i : arrayOne) {
+            for (int j : arrayTwo) {
+                sumCollection.add(i + j);
+            }
+        }
+        return sumCollection;
+    }
+
+    private int findQuadruplets(Collection<Integer> abAuxiliaryCollection,
+                                Collection<Integer> cdAuxiliaryCollection) {
+        if (abAuxiliaryCollection == null || abAuxiliaryCollection.isEmpty()) {
             return 0;
         }
-        Set<List<Integer>> foundQuadruplets = new HashSet<>();
-        abAuxiliary.forEach((abSum, abPairs) -> {
-            int requiredValue = -abSum;
-            List<Pair> validCdPairs = cdAuxiliary.get(requiredValue);
-            if (validCdPairs == null) {
-                return;
-            }
-            abPairs.forEach(validAbPair ->
-                    validCdPairs.forEach(
-                            validCdPair -> {
-                                List<Integer> potentialQuadruplet = Arrays.asList(
-                                        validAbPair.firstIndex,
-                                        validAbPair.secondIndex,
-                                        validCdPair.firstIndex,
-                                        validCdPair.secondIndex);
-                                //No sorting this time because the order must be a,b,c,d
-                                foundQuadruplets.add(potentialQuadruplet);
-                            }
-                    ));
-        });
-        return foundQuadruplets.size();
-    }
-
-    private Map<Integer, List<Pair>> createAuxiliary(int[] arrayOne, int[] arrayTwo) {
-        Map<Integer, List<Pair>> auxiliaryMap = new HashMap<>();
-        for (int i = 0; i < arrayOne.length; i++) {
-            for (int j = 0; j < arrayTwo.length; j++) {
-                int sum = arrayOne[i] + arrayTwo[j];
-                List<Pair> pairsOfSum = auxiliaryMap.computeIfAbsent(sum, integer -> new ArrayList<>());
-                pairsOfSum.add(new Pair(arrayOne[i], arrayTwo[j], i, j));
+        int foundQuadruplets = 0;
+        for (Integer abSum : abAuxiliaryCollection) {
+            for (Integer cdSum : cdAuxiliaryCollection) {
+                if (abSum + cdSum == 0) {
+                    foundQuadruplets++;
+                }
             }
         }
-        return auxiliaryMap;
+        return foundQuadruplets;
+    }
+
+    private boolean containsTargetValue(Collection<Integer> cdAuxiliary, Integer abSum) {
+        return cdAuxiliary.contains(-abSum);
     }
 
     private void validateInput(int[] a, int[] b, int[] c, int[] d) {
@@ -67,18 +71,6 @@ public class FourSumII {
             throw new IllegalArgumentException("All arrays must have the same length");
         } else if (a.length > 500) {
             throw new IllegalArgumentException("Array length has to be between 0 and 500 (inclusive)");
-        }
-    }
-
-    static class Pair {
-        final int firstIndex;
-        final int secondIndex;
-        final int sum;
-
-        public Pair(int firstValue, int secondValue, int firstIndex, int secondIndex) {
-            sum = firstValue + secondValue;
-            this.firstIndex = firstIndex;
-            this.secondIndex = secondIndex;
         }
     }
 }
