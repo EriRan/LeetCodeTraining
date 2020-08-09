@@ -26,20 +26,10 @@ public class FourSum {
 
     private List<Pair> buildAuxiliary(int[] numsCopy) {
         List<Pair> auxiliary = new ArrayList<>();
-        Integer previousI = null;
-        Integer previousJ = null;
         for (int i = 0; i < numsCopy.length; i++) {
-            if (previousI != null && previousI == i) {
-                continue;
-            }
             for (int j = numsCopy.length - 1; j > i; j--) {
-                if (previousJ != null && previousJ == j) {
-                    continue;
-                }
                 auxiliary.add(new Pair(numsCopy[i], numsCopy[j], i, j));
-                previousJ = j;
             }
-            previousI = i;
         }
         return auxiliary;
     }
