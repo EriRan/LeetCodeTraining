@@ -11,32 +11,22 @@ import java.util.*;
  */
 public class FourSumII {
 
+    private static final int TARGET = 0;
+
     public int fourSumCount(int[] a, int[] b, int[] c, int[] d) {
         validateInput(a, b, c, d);
         return findQuadruplets(
                 createAuxiliaryList(a, b),
-                createAuxiliaryList(c, d));
+                createAuxiliaryList(c, d)
+        );
     }
 
-    private List<Integer> createAuxiliaryList(int[] arrayOne, int[] arrayTwo) {
+    private List<Integer> createAuxiliaryList(int[] arrayOne,
+                                              int[] arrayTwo) {
         List<Integer> sumList = new ArrayList<>();
         for (int j : arrayOne) {
             for (int k : arrayTwo) {
                 sumList.add(j + k);
-            }
-        }
-        return sumList;
-    }
-
-    /**
-     * Set to just store the fact if a sum is contained in the two arrays. It is faster to search from a set than to
-     * iterate a whole List
-     */
-    private Set<Integer> createAuxiliarySet(int[] arrayOne, int[] arrayTwo) {
-        Set<Integer> sumList = new HashSet<>();
-        for (int i : arrayOne) {
-            for (int j : arrayTwo) {
-                sumList.add(i + j);
             }
         }
         return sumList;
@@ -50,16 +40,12 @@ public class FourSumII {
         int foundQuadruplets = 0;
         for (Integer abSum : abAuxiliaryList) {
             for (Integer cdSum : cdAuxiliaryList) {
-                if (abSum + cdSum == 0) {
+                if (abSum + cdSum == TARGET) {
                     foundQuadruplets++;
                 }
             }
         }
         return foundQuadruplets;
-    }
-
-    private boolean containsTargetValue(List<Integer> cdAuxiliary, Integer abSum) {
-        return cdAuxiliary.contains(-abSum);
     }
 
     private void validateInput(int[] a, int[] b, int[] c, int[] d) {
