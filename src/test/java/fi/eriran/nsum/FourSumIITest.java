@@ -20,6 +20,18 @@ class FourSumIITest {
     }
 
     @Test
+    void testEmpty() {
+        assertEquals(
+                0,
+                new FourSumII().fourSumCount(
+                        new int[]{},
+                        new int[]{},
+                        new int[]{},
+                        new int[]{}
+                ));
+    }
+
+    @Test
     void submissionTest1() {
         assertEquals(
                 6,
