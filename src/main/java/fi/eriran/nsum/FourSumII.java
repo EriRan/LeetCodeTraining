@@ -49,12 +49,10 @@ public class FourSumII {
         int foundQuadruplets = 0;
         for (Map.Entry<Integer, List<Pair>> entry : outerAuxiliary.entrySet()) {
             Integer sum = entry.getKey();
-            List<Pair> pairs = entry.getValue();
-            for (Pair ignored : pairs) {
-                List<Pair> cdPairs = innerAuxiliary.get(-sum);
-                if (cdPairs != null && !cdPairs.isEmpty()) {
-                    foundQuadruplets += cdPairs.size();
-                }
+            List<Pair> outerPairs = entry.getValue();
+            List<Pair> innerPairs = innerAuxiliary.get(-sum);
+            if (innerPairs != null && !innerPairs.isEmpty()) {
+                foundQuadruplets += innerPairs.size() * outerPairs.size();
             }
         }
         return foundQuadruplets;
