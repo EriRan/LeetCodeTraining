@@ -11,58 +11,49 @@ import java.util.*;
  */
 public class FourSumII {
 
-    private static final int TARGET = 0;
-
     public int fourSumCount(int[] a, int[] b, int[] c, int[] d) {
         validateInput(a, b, c, d);
-        List<Integer> abAuxiliary = createPrimaryAuxiliaryList(a, b);
-        List<Integer> cdAuxiliary = createSecondaryAuxiliaryList(c,d, abAuxiliary);
-        return findQuadruplets(
-                abAuxiliary,
-                cdAuxiliary
-        );
+        Map<Integer, List<Pair>> abAuxiliaryMap = createAuxiliaryMap(a, b);
+        Map<Integer, List<Pair>> cdAuxiliaryMap = createAuxiliaryMap(c, d);
+        if (abAuxiliaryMap.size() >= cdAuxiliaryMap.size()) {
+            return findQuadruplets(
+                    abAuxiliaryMap,
+                    cdAuxiliaryMap
+            );
+        } else {
+            return findQuadruplets(
+                    cdAuxiliaryMap,
+                    abAuxiliaryMap
+            );
+        }
     }
 
-    private List<Integer> createPrimaryAuxiliaryList(int[] arrayOne,
-                                                     int[] arrayTwo) {
-        List<Integer> sumList = new ArrayList<>();
-        for (int j : arrayOne) {
-            for (int k : arrayTwo) {
-                sumList.add(j + k);
+    private Map<Integer, List<Pair>> createAuxiliaryMap(int[] arrayOne,
+                                                        int[] arrayTwo) {
+        Map<Integer, List<Pair>> auxiliaryMap = new HashMap<>();
+        for (int i = 0; i < arrayOne.length; i++) {
+            for (int j = 0; j < arrayTwo.length; j++) {
+                int sum = arrayOne[i] + arrayTwo[j];
+                List<Pair> pairsWithSum = auxiliaryMap.computeIfAbsent(sum, integer -> new ArrayList<>());
+                pairsWithSum.add(new Pair(i, j));
             }
         }
-        return sumList;
+        return auxiliaryMap;
     }
 
-    private List<Integer> createSecondaryAuxiliaryList(int[] arrayOne, int[] arrayTwo, List<Integer> primaryAuxiliary) {
-        if (primaryAuxiliary == null || primaryAuxiliary.isEmpty()) {
-            return new ArrayList<>();
-        }
-        primaryAuxiliary.sort(Integer::compareTo);
-        int min = primaryAuxiliary.get(0);
-        int max = primaryAuxiliary.get(primaryAuxiliary.size() - 1);
-        List<Integer> sumList = new ArrayList<>();
-        for (int j : arrayOne) {
-            for (int k : arrayTwo) {
-                int sum = j + k;
-                if (sum >= min || sum <= max) {
-                    sumList.add(sum);
-                }
-            }
-        }
-        return sumList;
-    }
-
-    private int findQuadruplets(List<Integer> abAuxiliaryList,
-                                List<Integer> cdAuxiliaryList) {
-        if (abAuxiliaryList == null || abAuxiliaryList.isEmpty()) {
+    private int findQuadruplets(Map<Integer, List<Pair>> outerAuxiliary,
+                                Map<Integer, List<Pair>> innerAuxiliary) {
+        if (outerAuxiliary == null || outerAuxiliary.isEmpty()) {
             return 0;
         }
         int foundQuadruplets = 0;
-        for (Integer abSum : abAuxiliaryList) {
-            for (Integer cdSum : cdAuxiliaryList) {
-                if (abSum + cdSum == TARGET) {
-                    foundQuadruplets++;
+        for (Map.Entry<Integer, List<Pair>> entry : outerAuxiliary.entrySet()) {
+            Integer sum = entry.getKey();
+            List<Pair> pairs = entry.getValue();
+            for (Pair ignored : pairs) {
+                List<Pair> cdPairs = innerAuxiliary.get(-sum);
+                if (cdPairs != null && !cdPairs.isEmpty()) {
+                    foundQuadruplets += cdPairs.size();
                 }
             }
         }
@@ -78,6 +69,16 @@ public class FourSumII {
             throw new IllegalArgumentException("All arrays must have the same length");
         } else if (a.length > 500) {
             throw new IllegalArgumentException("Array length has to be between 0 and 500 (inclusive)");
+        }
+    }
+
+    static class Pair {
+        final int firstIndex;
+        final int secondIndex;
+
+        public Pair(int firstIndex, int secondIndex) {
+            this.firstIndex = firstIndex;
+            this.secondIndex = secondIndex;
         }
     }
 }
