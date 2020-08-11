@@ -15,4 +15,9 @@ class LongestValidParenthesesTest {
     void testExample2() {
         assertEquals(4, new LongestValidParentheses().longestValidParentheses(")()())"));
     }
+
+    @Test
+    void testTwoValidSubstrings() {
+        assertEquals(6, new LongestValidParentheses().longestValidParentheses(")()()())()()"));
+    }
 }
