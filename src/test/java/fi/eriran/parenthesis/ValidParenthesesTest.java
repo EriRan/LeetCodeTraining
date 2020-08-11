@@ -1,4 +1,4 @@
-package fi.eriran.other;
+package fi.eriran.parenthesis;
 
 import org.junit.jupiter.api.Test;
 
