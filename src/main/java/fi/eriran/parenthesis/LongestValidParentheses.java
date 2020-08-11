@@ -18,7 +18,38 @@ public class LongestValidParentheses {
     }
 
     private int countValidParentheses(String string) {
-        return 0;
+        int maxValidLength = 0;
+        int currentValidLength = 0;
+        Character previousCharacter = null;
+
+        for (char currentCharacter : string.toCharArray()) {
+            if (previousCharacter == null) {
+                previousCharacter = currentCharacter;
+            } else {
+                if (previousCharacter == CLOSE_PARENTHESIS) {
+                    if (currentCharacter != OPEN_PARENTHESIS) {
+                        maxValidLength = attemptToChangeMaxValidLength(currentValidLength, maxValidLength);
+                        currentValidLength = 0;
+                    }
+                } else if (previousCharacter == OPEN_PARENTHESIS) {
+                    if (currentCharacter == CLOSE_PARENTHESIS) {
+                        currentValidLength += 2;
+                    } else {
+                        maxValidLength = attemptToChangeMaxValidLength(currentValidLength, maxValidLength);
+                        currentValidLength = 0;
+                    }
+                }
+                previousCharacter = currentCharacter;
+            }
+        }
+        if (currentValidLength != 0) {
+            maxValidLength = attemptToChangeMaxValidLength(currentValidLength, maxValidLength);
+        }
+        return maxValidLength;
+    }
+
+    private int attemptToChangeMaxValidLength(int currentValidLength, int maxValidLength) {
+        return Math.max(currentValidLength, maxValidLength);
     }
 
     private void validateAllCharactersAreValid(String string) {
