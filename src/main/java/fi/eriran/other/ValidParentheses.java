@@ -50,7 +50,7 @@ public class ValidParentheses {
                 }
             }
         }
-        return true;
+        return deque.isEmpty();
     }
 
     private boolean isCorrectBracketClosed(Character topCharacter, char currentCharacter) {
