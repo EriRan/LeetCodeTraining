@@ -30,4 +30,14 @@ class ValidParenthesesTest {
     void testExample5() {
         assertTrue(new ValidParentheses().isValid("{[]}"));
     }
+
+    @Test
+    void testOnlyOneOpenSquareBracket() {
+        assertFalse(new ValidParentheses().isValid("["));
+    }
+
+    @Test
+    void testOnlyOneCloseSquareBracket() {
+        assertFalse(new ValidParentheses().isValid("]"));
+    }
 }
