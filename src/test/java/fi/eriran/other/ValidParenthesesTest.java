@@ -40,4 +40,15 @@ class ValidParenthesesTest {
     void testOnlyOneCloseSquareBracket() {
         assertFalse(new ValidParentheses().isValid("]"));
     }
+
+    @Test
+    void testBlank() {
+        ValidParentheses validParentheses = new ValidParentheses();
+        assertThrows(IllegalArgumentException.class, () -> validParentheses.isValid("   "));
+    }
+
+    @Test
+    void testEmptyIsValid() {
+        assertTrue(new ValidParentheses().isValid(""));
+    }
 }
