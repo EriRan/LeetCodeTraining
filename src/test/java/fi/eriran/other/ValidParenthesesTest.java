@@ -28,6 +28,6 @@ class ValidParenthesesTest {
 
     @Test
     void testExample5() {
-        assertFalse(new ValidParentheses().isValid("{[]}"));
+        assertTrue(new ValidParentheses().isValid("{[]}"));
     }
 }
