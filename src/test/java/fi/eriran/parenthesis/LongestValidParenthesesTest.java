@@ -22,7 +22,12 @@ class LongestValidParenthesesTest {
     }
 
     @Test
-    void testParenthesisInsideParenthesis() {
+    void submissionTest1() {
         assertEquals(6, new LongestValidParentheses().longestValidParentheses("()(())"));
+    }
+
+    @Test
+    void submissionTest2() {
+        assertEquals(2, new LongestValidParentheses().longestValidParentheses("()(()"));
     }
 }
