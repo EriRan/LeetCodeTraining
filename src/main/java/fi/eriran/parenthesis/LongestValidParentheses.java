@@ -63,22 +63,14 @@ public class LongestValidParentheses {
             rightPointer--;
         }
 
-        //To make the pointers point to correct indexes
-        if (leftPointer != rightPointer) {
-            leftPointer--;
-            rightPointer++;
-        }
-
         //Close the right or left input if the pointers end up in the same location
         if (leftPointer == rightPointer) {
             char midpointCharacter = charArray[leftPointer];
             if (rightOpenParenthesisCount > 0 && midpointCharacter == LEFT_POINTING_PARENTHESIS) {
                 rightValidLength += 2;
                 rightOpenParenthesisCount--;
-                leftOpenParenthesisCount--;
             } else if (leftOpenParenthesisCount > 0 && midpointCharacter == RIGHT_POINTING_PARENTHESIS) {
                 leftValidLength += 2;
-                rightOpenParenthesisCount--;
                 leftOpenParenthesisCount--;
             } else {
                 //The mid part causes a split. Do a max from both sides and then quit
@@ -97,15 +89,13 @@ public class LongestValidParentheses {
             if (leftOpenParenthesisCount == rightOpenParenthesisCount) {
                 leftValidLength += 2 * rightOpenParenthesisCount;
             } else if (leftOpenParenthesisCount < rightOpenParenthesisCount) {
-                int closeableParenthesis = Math.abs(leftOpenParenthesisCount - rightOpenParenthesisCount);
-                leftValidLength += 2 * closeableParenthesis;
+                leftValidLength += 2 * Math.abs(leftOpenParenthesisCount - rightOpenParenthesisCount);
                 maxValidLength = attemptToChangeMaxValidLength(
                         rightValidLength,
                         maxValidLength);
                 rightValidLength = 0;
             } else {
-                int closeableParenthesis = Math.abs(leftOpenParenthesisCount - rightOpenParenthesisCount);
-                rightValidLength += 2 * closeableParenthesis;
+                rightValidLength += 2 * Math.abs(leftOpenParenthesisCount - rightOpenParenthesisCount);
                 maxValidLength = attemptToChangeMaxValidLength(
                         leftValidLength,
                         maxValidLength);
