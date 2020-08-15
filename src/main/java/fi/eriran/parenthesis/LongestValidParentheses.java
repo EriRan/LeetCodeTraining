@@ -6,8 +6,8 @@ package fi.eriran.parenthesis;
  */
 public class LongestValidParentheses {
 
-    private static final char OPEN_PARENTHESIS = '(';
-    private static final char CLOSE_PARENTHESIS = ')';
+    private static final char LEFT_POINTING_PARENTHESIS = '(';
+    private static final char RIGHT_POINTING_PARENTHESIS = ')';
 
     public int longestValidParentheses(String string) {
         if (string == null || string.isEmpty()) {
@@ -19,31 +19,101 @@ public class LongestValidParentheses {
 
     private int countValidParentheses(String string) {
         int maxValidLength = 0;
-        int currentValidLength = 0;
-        Character previousCharacter = null;
+        int leftValidLength = 0;
+        int rightValidLength = 0;
 
-        for (char currentCharacter : string.toCharArray()) {
-            if (previousCharacter == null) {
-                previousCharacter = currentCharacter;
+        int leftOpenParenthesisCount = 0;
+        int rightOpenParenthesisCount = 0;
+
+        char[] charArray = string.toCharArray();
+        int leftPointer = 0;
+        int rightPointer = charArray.length - 1;
+
+        while (leftPointer < rightPointer) {
+            //Check left pointer
+            char leftCharacter = charArray[leftPointer];
+            if (LEFT_POINTING_PARENTHESIS == leftCharacter) {
+                leftOpenParenthesisCount++;
             } else {
-                if (previousCharacter == CLOSE_PARENTHESIS) {
-                    if (currentCharacter != OPEN_PARENTHESIS) {
-                        maxValidLength = attemptToChangeMaxValidLength(currentValidLength, maxValidLength);
-                        currentValidLength = 0;
-                    }
-                } else if (previousCharacter == OPEN_PARENTHESIS) {
-                    if (currentCharacter == CLOSE_PARENTHESIS) {
-                        currentValidLength += 2;
-                    } else {
-                        maxValidLength = attemptToChangeMaxValidLength(currentValidLength, maxValidLength);
-                        currentValidLength = 0;
-                    }
+                //Encountered a closing parenthesis on the left
+                if (leftOpenParenthesisCount == 0) {
+                    maxValidLength = attemptToChangeMaxValidLength(leftValidLength, maxValidLength);
+                    leftValidLength = 0;
+                } else {
+                    leftValidLength += 2;
+                    leftOpenParenthesisCount--;
                 }
-                previousCharacter = currentCharacter;
+            }
+            //Check right pointer
+            char rightCharacter = charArray[rightPointer];
+            if (RIGHT_POINTING_PARENTHESIS == rightCharacter) {
+                rightOpenParenthesisCount++;
+            } else {
+                //Encountered a closing parenthesis on the right
+                if (rightOpenParenthesisCount == 0) {
+                    //Closed in invalid situation. Attempt to change the max length
+                    maxValidLength = attemptToChangeMaxValidLength(rightValidLength, maxValidLength);
+                    rightValidLength = 0;
+                } else {
+                    rightValidLength += 2;
+                    rightOpenParenthesisCount--;
+                }
+            }
+            leftPointer++;
+            rightPointer--;
+        }
+
+        //Close the right or left input if the pointers end up in the same location
+        if (leftPointer == rightPointer) {
+            char midpointCharacter = charArray[leftPointer];
+            if (rightOpenParenthesisCount > 0 && midpointCharacter == LEFT_POINTING_PARENTHESIS) {
+                rightValidLength += 2;
+                rightOpenParenthesisCount--;
+            } else if (leftOpenParenthesisCount > 0 && midpointCharacter == RIGHT_POINTING_PARENTHESIS) {
+                leftValidLength += 2;
+                leftOpenParenthesisCount--;
+            } else {
+                //The mid part causes a split. Do a max from both sides and then quit
+                maxValidLength = attemptToChangeMaxValidLength(
+                        leftValidLength,
+                        maxValidLength);
+                maxValidLength = attemptToChangeMaxValidLength(
+                        rightValidLength,
+                        maxValidLength);
+                return maxValidLength;
             }
         }
-        if (currentValidLength != 0) {
-            maxValidLength = attemptToChangeMaxValidLength(currentValidLength, maxValidLength);
+
+        if (leftOpenParenthesisCount > 0 && rightOpenParenthesisCount > 0) {
+            if (leftOpenParenthesisCount == rightOpenParenthesisCount) {
+                leftValidLength += 2 * rightOpenParenthesisCount;
+            } else if (leftOpenParenthesisCount < rightOpenParenthesisCount) {
+                leftValidLength += 2 * Math.abs(leftOpenParenthesisCount - rightOpenParenthesisCount);
+                maxValidLength = attemptToChangeMaxValidLength(
+                        rightValidLength,
+                        maxValidLength);
+                rightValidLength = 0;
+            } else {
+                rightValidLength += 2 * Math.abs(leftOpenParenthesisCount - rightOpenParenthesisCount);
+                maxValidLength = attemptToChangeMaxValidLength(
+                        leftValidLength,
+                        maxValidLength);
+                leftValidLength = 0;
+            }
+        }
+
+        if (leftValidLength > 0 && rightValidLength > 0) {
+            maxValidLength = attemptToChangeMaxValidLength(
+                    leftValidLength + rightValidLength,
+                    maxValidLength);
+        } else if (leftValidLength > 0) {
+            maxValidLength = attemptToChangeMaxValidLength(
+                    leftValidLength,
+                    maxValidLength);
+        } else if (rightValidLength > 0) {
+            maxValidLength = attemptToChangeMaxValidLength(
+                    rightValidLength,
+                    maxValidLength);
         }
         return maxValidLength;
     }
@@ -62,8 +132,8 @@ public class LongestValidParentheses {
 
     public static boolean isValidCharacter(Character character) {
         switch (character) {
-            case OPEN_PARENTHESIS:
-            case CLOSE_PARENTHESIS:
+            case LEFT_POINTING_PARENTHESIS:
+            case RIGHT_POINTING_PARENTHESIS:
                 return true;
             default:
                 return false;
