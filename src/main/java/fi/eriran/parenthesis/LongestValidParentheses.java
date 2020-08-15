@@ -84,6 +84,7 @@ public class LongestValidParentheses {
             }
         }
 
+        //Combine statuses of the pointers using the amounts of parenthesis they have open
         if (leftOpenParenthesisCount > 0 && rightOpenParenthesisCount > 0) {
             if (leftOpenParenthesisCount == rightOpenParenthesisCount) {
                 leftValidLength += 2 * rightOpenParenthesisCount;
@@ -102,6 +103,7 @@ public class LongestValidParentheses {
             }
         }
 
+        //Deduce max valid length one more time based on the valid length values of the pointers
         if (leftValidLength > 0 && rightValidLength > 0) {
             maxValidLength = attemptToChangeMaxValidLength(
                     leftValidLength + rightValidLength,
