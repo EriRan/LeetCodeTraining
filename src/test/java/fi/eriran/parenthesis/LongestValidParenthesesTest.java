@@ -30,4 +30,9 @@ class LongestValidParenthesesTest {
     void submissionTest2() {
         assertEquals(2, new LongestValidParentheses().longestValidParentheses("()(()"));
     }
+
+    @Test
+    void submissionTest3() {
+        assertEquals(8, new LongestValidParentheses().longestValidParentheses("((()))())"));
+    }
 }
