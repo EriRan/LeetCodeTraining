@@ -28,39 +28,38 @@ public class ZigzagConversion {
     }
 
     private String makeZigZag(String string, int numberOfRows) {
-        //Rows 3 pattern
-        //0,4,8,12
-        //1,3,5,7,9,11,13
-        //2,6,10,
-
-        //Rows 4 pattern
-        //0,6,12
-        //1,5,7,11,13
-        //2,4,8,10
-        //3,9
-        Map<Integer, List<Character>> characterRows = new HashMap<>();
-        int currentRow = 1;
-        Direction currentDirection = Direction.DOWN;
-        for (char currentCharacter : string.toCharArray()) {
-            List<Character> rowCharacters = characterRows.computeIfAbsent(currentRow, ArrayList::new);
-            rowCharacters.add(currentCharacter);
-            if (currentDirection == Direction.DOWN) {
-                if (currentRow == numberOfRows) {
-                    currentDirection = Direction.UP;
-                    currentRow--;
-                } else {
-                    currentRow++;
-                }
-            } else {
-                if (currentRow == 1) {
-                    currentDirection = Direction.DOWN;
-                    currentRow++;
-                } else {
-                    currentRow--;
-                }
-            }
-        }
+        Map<Integer, List<Character>> characterRows = createInitializedMap(numberOfRows);
+        createRows(string, numberOfRows, characterRows);
         return buildCombinedString(characterRows, numberOfRows);
+    }
+
+    private void createRows(String string, int numberOfRows, Map<Integer, List<Character>> characterRows) {
+        int currentRow = 1;
+        int incrementValue = 1;
+        for (char currentCharacter : string.toCharArray()) {
+            characterRows
+                    .get(currentRow)
+                    .add(currentCharacter);
+            incrementValue = deduceIncrementDirection(numberOfRows, currentRow, incrementValue);
+            currentRow += incrementValue;
+        }
+    }
+
+    private Map<Integer, List<Character>> createInitializedMap(int numberOfRows) {
+        Map<Integer, List<Character>> characterRowMap = new HashMap<>();
+        for (int i = 1; i <= numberOfRows; i++) {
+            characterRowMap.put(i, new ArrayList<>());
+        }
+        return characterRowMap;
+    }
+
+    private int deduceIncrementDirection(int numberOfRows, int currentRow, int incrementValue) {
+        if (currentRow == numberOfRows) {
+            incrementValue = -1;
+        } else if (currentRow == 1) {
+            incrementValue = 1;
+        }
+        return incrementValue;
     }
 
     private String buildCombinedString(Map<Integer, List<Character>> characterRows, int numberOfRows) {
@@ -69,9 +68,5 @@ public class ZigzagConversion {
             characterRows.get(i).forEach(stringBuilder::append);
         }
         return stringBuilder.toString();
-    }
-
-    enum Direction {
-        UP, DOWN
     }
 }
