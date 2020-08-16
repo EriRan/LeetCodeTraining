@@ -22,13 +22,21 @@ public class ZigzagConversion {
         if (numberOfRows == 1 || string.length() <= numberOfRows) {
             return string;
         }
-        return makeZigZag(string, numberOfRows);
+        return createZigZag(string, numberOfRows);
     }
 
-    private String makeZigZag(String string, int numberOfRows) {
+    private String createZigZag(String string, int numberOfRows) {
         Map<Integer, StringBuilder> characterRows = createInitializedMap(numberOfRows);
         createRows(string, numberOfRows, characterRows);
         return buildCombinedString(characterRows, numberOfRows);
+    }
+
+    private Map<Integer, StringBuilder> createInitializedMap(int numberOfRows) {
+        Map<Integer, StringBuilder> characterRowMap = new HashMap<>();
+        for (int i = 1; i <= numberOfRows; i++) {
+            characterRowMap.put(i, new StringBuilder());
+        }
+        return characterRowMap;
     }
 
     private void createRows(String string, int numberOfRows, Map<Integer, StringBuilder> characterRows) {
@@ -41,14 +49,6 @@ public class ZigzagConversion {
             incrementValue = deduceIncrementDirection(numberOfRows, currentRow, incrementValue);
             currentRow += incrementValue;
         }
-    }
-
-    private Map<Integer, StringBuilder> createInitializedMap(int numberOfRows) {
-        Map<Integer, StringBuilder> characterRowMap = new HashMap<>();
-        for (int i = 1; i <= numberOfRows; i++) {
-            characterRowMap.put(i, new StringBuilder());
-        }
-        return characterRowMap;
     }
 
     private int deduceIncrementDirection(int numberOfRows, int currentRow, int incrementValue) {
