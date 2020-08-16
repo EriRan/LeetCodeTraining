@@ -28,4 +28,9 @@ class ZigzagConversionTest {
     void example2() {
         assertEquals("PINALSIGYAHRPI", new ZigzagConversion().convert("PAYPALISHIRING", 4));
     }
+
+    @Test
+    void shorterInputThanNumberOfRows() {
+        assertEquals("A", new ZigzagConversion().convert("A", 2));
+    }
 }

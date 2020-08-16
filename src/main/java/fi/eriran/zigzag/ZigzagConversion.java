@@ -21,10 +21,9 @@ public class ZigzagConversion {
         if (string == null || string.isEmpty()) {
             return "";
         }
-        if (numberOfRows == 1) {
+        if (numberOfRows == 1 || string.length() <= numberOfRows) {
             return string;
         }
-
         return makeZigZag(string, numberOfRows);
     }
 
