@@ -56,7 +56,8 @@ public class LongestValidParentheses {
                         maxValidParentheses
                 );
             }
-        } else {
+        }
+        if (currentValidParentheses != 0) {
             maxValidParentheses = attemptToChangeMaxValidLength(
                     currentValidParentheses,
                     maxValidParentheses);
