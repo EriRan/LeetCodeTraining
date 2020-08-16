@@ -17,42 +17,55 @@ public class LongestValidParentheses {
             return 0;
         }
         validateAllCharactersAreValid(string);
-        return countValidParentheses(string);
+        //Amount of valid parentheses times two is the amount of valid characters
+        return countValidParentheses(string) * 2;
     }
 
     private int countValidParentheses(String string) {
+        if (string.length() == 1) {
+            return 0;
+        }
         int maxValidParentheses = 0;
         int currentValidParentheses = 0;
-        Deque<OpenParenthesisPoint> openParenthesisLocations = new ArrayDeque<>();
+        Deque<Integer> openParenthesisValuesAt = new ArrayDeque<>();
         char[] charArray = string.toCharArray();
 
-        for (int i = 0; i < charArray.length; i++) {
-            char currentCharacter = charArray[i];
-            if (openParenthesisLocations.isEmpty()) {
+        for (char currentCharacter : charArray) {
+            if (openParenthesisValuesAt.isEmpty()) {
                 if (currentCharacter == OPEN_PARENTHESIS) {
-                    openParenthesisLocations.push(new OpenParenthesisPoint(i, 0));
+                    openParenthesisValuesAt.push(0);
                 } else {
                     maxValidParentheses = attemptToChangeMaxValidLength(currentValidParentheses, maxValidParentheses);
                     currentValidParentheses = 0;
                 }
             } else {
                 if (currentCharacter == OPEN_PARENTHESIS) {
-                    openParenthesisLocations.push(new OpenParenthesisPoint(i, 0));
+                    openParenthesisValuesAt.push(0);
                 } else {
-                    OpenParenthesisPoint popped = openParenthesisLocations.pop();
-                    if (openParenthesisLocations.isEmpty()) {
-                        currentValidParentheses += popped.validAmountAtIndex + 1;
+                    Integer popped = openParenthesisValuesAt.pop();
+                    if (openParenthesisValuesAt.isEmpty()) {
+                        currentValidParentheses += popped + 1;
                     } else {
-                        openParenthesisLocations.peek().validAmountAtIndex += popped.validAmountAtIndex + 1;
+                        //Increment the top integer of the queue with the valueAt of the closed parenthesis with 1
+                        openParenthesisValuesAt.push(popped + openParenthesisValuesAt.pop() + 1);
                     }
                 }
             }
         }
 
-        if (!openParenthesisLocations.isEmpty()) {
-            for (OpenParenthesisPoint openParenthesisLocation : openParenthesisLocations) {
+        return calculatePossibleMaxFromRemaining(
+                maxValidParentheses,
+                currentValidParentheses,
+                openParenthesisValuesAt);
+    }
+
+    private int calculatePossibleMaxFromRemaining(int maxValidParentheses,
+                                                  int currentValidParentheses,
+                                                  Deque<Integer> openParenthesisValuesAt) {
+        if (!openParenthesisValuesAt.isEmpty()) {
+            for (Integer openParenthesisValueAt : openParenthesisValuesAt) {
                 maxValidParentheses = attemptToChangeMaxValidLength(
-                        openParenthesisLocation.validAmountAtIndex,
+                        openParenthesisValueAt,
                         maxValidParentheses
                 );
             }
@@ -62,7 +75,7 @@ public class LongestValidParentheses {
                     currentValidParentheses,
                     maxValidParentheses);
         }
-        return maxValidParentheses * 2;
+        return maxValidParentheses;
     }
 
     private int attemptToChangeMaxValidLength(int currentValidLength, int maxValidLength) {
@@ -84,16 +97,6 @@ public class LongestValidParentheses {
                 return true;
             default:
                 return false;
-        }
-    }
-
-    static class OpenParenthesisPoint {
-        int index;
-        int validAmountAtIndex;
-
-        public OpenParenthesisPoint(int index, int validAmountAtIndex) {
-            this.index = index;
-            this.validAmountAtIndex = validAmountAtIndex;
         }
     }
 }
