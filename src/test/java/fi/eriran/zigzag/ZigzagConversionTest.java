@@ -33,4 +33,10 @@ class ZigzagConversionTest {
     void shorterInputThanNumberOfRows() {
         assertEquals("A", new ZigzagConversion().convert("A", 2));
     }
+
+    @Test
+    void sameSizeInputAsNumberOfRows() {
+        String lengthTen = "TENLETTERS";
+        assertEquals(lengthTen, new ZigzagConversion().convert(lengthTen, 10));
+    }
 }
