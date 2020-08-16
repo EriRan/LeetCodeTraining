@@ -28,27 +28,24 @@ public class LongestValidParentheses {
         int maxValidParentheses = 0;
         int currentValidParentheses = 0;
         Deque<Integer> openParenthesisValuesAt = new ArrayDeque<>();
-        char[] charArray = string.toCharArray();
 
-        for (char currentCharacter : charArray) {
-            if (openParenthesisValuesAt.isEmpty()) {
-                if (currentCharacter == OPEN_PARENTHESIS) {
-                    openParenthesisValuesAt.push(0);
-                } else {
-                    maxValidParentheses = attemptToChangeMaxValidLength(currentValidParentheses, maxValidParentheses);
-                    currentValidParentheses = 0;
-                }
+        for (char currentCharacter : string.toCharArray()) {
+            if (currentCharacter == OPEN_PARENTHESIS) {
+                openParenthesisValuesAt.push(0);
+            } else if (openParenthesisValuesAt.isEmpty()) {
+                //Current character is a closed parenthesis and no unclosed parentheses exist
+                //This is guaranteed to be an invalid character so we will attempt to add the currentValidParentheses
+                // as max and then reset it
+                maxValidParentheses = attemptToChangeMaxValidLength(currentValidParentheses, maxValidParentheses);
+                currentValidParentheses = 0;
             } else {
-                if (currentCharacter == OPEN_PARENTHESIS) {
-                    openParenthesisValuesAt.push(0);
+                //Current character is a closed parenthesis and there exist unclosed parentheses
+                Integer closedParenthesisValueAt = openParenthesisValuesAt.pop();
+                if (openParenthesisValuesAt.isEmpty()) {
+                    currentValidParentheses += closedParenthesisValueAt + 1;
                 } else {
-                    Integer popped = openParenthesisValuesAt.pop();
-                    if (openParenthesisValuesAt.isEmpty()) {
-                        currentValidParentheses += popped + 1;
-                    } else {
-                        //Increment the top integer of the queue with the valueAt of the closed parenthesis with 1
-                        openParenthesisValuesAt.push(popped + openParenthesisValuesAt.pop() + 1);
-                    }
+                    //Increment the top integer of the queue with the valueAt of the closed parenthesis with 1
+                    openParenthesisValuesAt.push(closedParenthesisValueAt + openParenthesisValuesAt.pop() + 1);
                 }
             }
         }
