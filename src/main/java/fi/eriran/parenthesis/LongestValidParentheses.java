@@ -1,5 +1,8 @@
 package fi.eriran.parenthesis;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
+
 /**
  * Given a string containing just the characters '(' and ')', find the length of the longest valid (well-formed)
  * parentheses substring.
@@ -18,34 +21,47 @@ public class LongestValidParentheses {
     }
 
     private int countValidParentheses(String string) {
-        int maxValidLength = 0;
-        int currentValidLength = 0;
-        Character previousCharacter = null;
+        int maxValidParentheses = 0;
+        int currentValidParentheses = 0;
+        Deque<OpenParenthesisPoint> openParenthesisLocations = new ArrayDeque<>();
+        char[] charArray = string.toCharArray();
 
-        for (char currentCharacter : string.toCharArray()) {
-            if (previousCharacter == null) {
-                previousCharacter = currentCharacter;
+        for (int i = 0; i < charArray.length; i++) {
+            char currentCharacter = charArray[i];
+            if (openParenthesisLocations.isEmpty()) {
+                if (currentCharacter == OPEN_PARENTHESIS) {
+                    openParenthesisLocations.push(new OpenParenthesisPoint(i, 0));
+                } else {
+                    maxValidParentheses = attemptToChangeMaxValidLength(currentValidParentheses, maxValidParentheses);
+                    currentValidParentheses = 0;
+                }
             } else {
-                if (previousCharacter == CLOSE_PARENTHESIS) {
-                    if (currentCharacter != OPEN_PARENTHESIS) {
-                        maxValidLength = attemptToChangeMaxValidLength(currentValidLength, maxValidLength);
-                        currentValidLength = 0;
-                    }
-                } else if (previousCharacter == OPEN_PARENTHESIS) {
-                    if (currentCharacter == CLOSE_PARENTHESIS) {
-                        currentValidLength += 2;
+                if (currentCharacter == OPEN_PARENTHESIS) {
+                    openParenthesisLocations.push(new OpenParenthesisPoint(i, 0));
+                } else {
+                    OpenParenthesisPoint popped = openParenthesisLocations.pop();
+                    if (openParenthesisLocations.isEmpty()) {
+                        currentValidParentheses += popped.validAmountAtIndex + 1;
                     } else {
-                        maxValidLength = attemptToChangeMaxValidLength(currentValidLength, maxValidLength);
-                        currentValidLength = 0;
+                        openParenthesisLocations.peek().validAmountAtIndex += popped.validAmountAtIndex + 1;
                     }
                 }
-                previousCharacter = currentCharacter;
             }
         }
-        if (currentValidLength != 0) {
-            maxValidLength = attemptToChangeMaxValidLength(currentValidLength, maxValidLength);
+
+        if (!openParenthesisLocations.isEmpty()) {
+            for (OpenParenthesisPoint openParenthesisLocation : openParenthesisLocations) {
+                maxValidParentheses = attemptToChangeMaxValidLength(
+                        openParenthesisLocation.validAmountAtIndex,
+                        maxValidParentheses
+                );
+            }
+        } else {
+            maxValidParentheses = attemptToChangeMaxValidLength(
+                    currentValidParentheses,
+                    maxValidParentheses);
         }
-        return maxValidLength;
+        return maxValidParentheses * 2;
     }
 
     private int attemptToChangeMaxValidLength(int currentValidLength, int maxValidLength) {
@@ -67,6 +83,16 @@ public class LongestValidParentheses {
                 return true;
             default:
                 return false;
+        }
+    }
+
+    static class OpenParenthesisPoint {
+        int index;
+        int validAmountAtIndex;
+
+        public OpenParenthesisPoint(int index, int validAmountAtIndex) {
+            this.index = index;
+            this.validAmountAtIndex = validAmountAtIndex;
         }
     }
 }
