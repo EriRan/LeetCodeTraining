@@ -22,6 +22,11 @@ class LongestValidParenthesesTest {
     }
 
     @Test
+    void multipleSplitters() {
+        assertEquals(2, new LongestValidParentheses().longestValidParentheses("()(()(()(()("));
+    }
+
+    @Test
     void submissionTest1() {
         assertEquals(6, new LongestValidParentheses().longestValidParentheses("()(())"));
     }
