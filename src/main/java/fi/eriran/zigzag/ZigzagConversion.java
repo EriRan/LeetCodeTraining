@@ -1,8 +1,6 @@
 package fi.eriran.zigzag;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -28,27 +26,27 @@ public class ZigzagConversion {
     }
 
     private String makeZigZag(String string, int numberOfRows) {
-        Map<Integer, List<Character>> characterRows = createInitializedMap(numberOfRows);
+        Map<Integer, StringBuilder> characterRows = createInitializedMap(numberOfRows);
         createRows(string, numberOfRows, characterRows);
         return buildCombinedString(characterRows, numberOfRows);
     }
 
-    private void createRows(String string, int numberOfRows, Map<Integer, List<Character>> characterRows) {
+    private void createRows(String string, int numberOfRows, Map<Integer, StringBuilder> characterRows) {
         int currentRow = 1;
         int incrementValue = 1;
         for (char currentCharacter : string.toCharArray()) {
             characterRows
                     .get(currentRow)
-                    .add(currentCharacter);
+                    .append(currentCharacter);
             incrementValue = deduceIncrementDirection(numberOfRows, currentRow, incrementValue);
             currentRow += incrementValue;
         }
     }
 
-    private Map<Integer, List<Character>> createInitializedMap(int numberOfRows) {
-        Map<Integer, List<Character>> characterRowMap = new HashMap<>();
+    private Map<Integer, StringBuilder> createInitializedMap(int numberOfRows) {
+        Map<Integer, StringBuilder> characterRowMap = new HashMap<>();
         for (int i = 1; i <= numberOfRows; i++) {
-            characterRowMap.put(i, new ArrayList<>());
+            characterRowMap.put(i, new StringBuilder());
         }
         return characterRowMap;
     }
@@ -62,10 +60,10 @@ public class ZigzagConversion {
         return incrementValue;
     }
 
-    private String buildCombinedString(Map<Integer, List<Character>> characterRows, int numberOfRows) {
+    private String buildCombinedString(Map<Integer, StringBuilder> characterRows, int numberOfRows) {
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 1; i <= numberOfRows; i++) {
-            characterRows.get(i).forEach(stringBuilder::append);
+            stringBuilder.append(characterRows.get(i).toString());
         }
         return stringBuilder.toString();
     }
