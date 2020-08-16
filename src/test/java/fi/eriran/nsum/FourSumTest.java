@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class FourSumTest {
 
     @Test
-    void testExample() {
+    void example1() {
         List<List<Integer>> lists = new FourSum().fourSum(new int[]{1, 0, -1, 0, -2, 2}, 0);
         assertFalse(CollectionUtils.isEmpty(lists));
         assertEquals(3, lists.size());
@@ -21,7 +21,7 @@ class FourSumTest {
     }
 
     @Test
-    void testZeroesInput() {
+    void zeroesInput() {
         List<List<Integer>> lists = new FourSum().fourSum(new int[]{0, 0, 0, 0}, 0);
         assertFalse(CollectionUtils.isEmpty(lists));
         assertEquals(1, lists.size());
@@ -29,7 +29,7 @@ class FourSumTest {
     }
 
     @Test
-    void testSubmissionTest1() {
+    void submissionTest1() {
         List<List<Integer>> lists = new FourSum().fourSum(new int[]{-7, -5, 0, 7, 1, 1, -10, -2, 7, 7, -2, -6, 0, -10, -5, 7, -8, 5}, 28);
         assertFalse(CollectionUtils.isEmpty(lists));
         assertEquals(1, lists.size());

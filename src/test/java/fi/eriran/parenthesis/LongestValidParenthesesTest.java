@@ -7,17 +7,17 @@ import static org.junit.jupiter.api.Assertions.*;
 class LongestValidParenthesesTest {
 
     @Test
-    void testExample1() {
+    void example1() {
         assertEquals(2, new LongestValidParentheses().longestValidParentheses("(()"));
     }
 
     @Test
-    void testExample2() {
+    void example2() {
         assertEquals(4, new LongestValidParentheses().longestValidParentheses(")()())"));
     }
 
     @Test
-    void testTwoValidSubstrings() {
+    void twoValidSubstrings() {
         assertEquals(6, new LongestValidParentheses().longestValidParentheses(")()()())()()"));
     }
 

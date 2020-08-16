@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class FourSumIITest {
 
     @Test
-    void testExample() {
+    void example1() {
         assertEquals(
                 2,
                 new FourSumII().fourSumCount(
@@ -20,7 +20,7 @@ class FourSumIITest {
     }
 
     @Test
-    void testEmpty() {
+    void emptyArrays() {
         assertEquals(
                 0,
                 new FourSumII().fourSumCount(

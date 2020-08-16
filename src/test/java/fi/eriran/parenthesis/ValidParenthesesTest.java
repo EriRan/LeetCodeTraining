@@ -7,48 +7,48 @@ import static org.junit.jupiter.api.Assertions.*;
 class ValidParenthesesTest {
 
     @Test
-    void testExample1() {
+    void example1() {
         assertTrue(new ValidParentheses().isValid("()"));
     }
 
     @Test
-    void testExample2() {
+    void example2() {
         assertTrue(new ValidParentheses().isValid("()[]{}"));
     }
 
     @Test
-    void testExample3() {
+    void example3() {
         assertFalse(new ValidParentheses().isValid("(]"));
     }
 
     @Test
-    void testExample4() {
+    void example4() {
         assertFalse(new ValidParentheses().isValid("([)]"));
     }
 
     @Test
-    void testExample5() {
+    void example5() {
         assertTrue(new ValidParentheses().isValid("{[]}"));
     }
 
     @Test
-    void testOnlyOneOpenSquareBracket() {
+    void onlyOneOpenSquareBracket() {
         assertFalse(new ValidParentheses().isValid("["));
     }
 
     @Test
-    void testOnlyOneCloseSquareBracket() {
+    void onlyOneCloseSquareBracket() {
         assertFalse(new ValidParentheses().isValid("]"));
     }
 
     @Test
-    void testBlank() {
+    void blank() {
         ValidParentheses validParentheses = new ValidParentheses();
         assertThrows(IllegalArgumentException.class, () -> validParentheses.isValid("   "));
     }
 
     @Test
-    void testEmptyIsValid() {
+    void emptyIsValid() {
         assertTrue(new ValidParentheses().isValid(""));
     }
 }
