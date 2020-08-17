@@ -60,4 +60,9 @@ class LongestPalindromicSubstringTest {
     void threeCharactersWithOneTwoCharacterPalindromeAtStart() {
         assertEquals("cc", new LongestPalindromicSubstring().longestPalindrome("ccd"));
     }
+
+    @Test
+    void oneCharacterInString() {
+        assertEquals("a", new LongestPalindromicSubstring().longestPalindrome("abcda"));
+    }
 }
