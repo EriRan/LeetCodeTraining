@@ -16,4 +16,13 @@ class LongestPalindromicSubstringTest {
     void example2() {
         assertEquals("bb", new LongestPalindromicSubstring().longestPalindrome("cbbd"));
     }
+
+    /**
+     * Classic Finnish palindrome which means "Soap stone merchant"
+     */
+    @Test
+    void simplePalindrome() {
+        String simplePalindrome = "saippuakivikauppias";
+        assertEquals(simplePalindrome, new LongestPalindromicSubstring().longestPalindrome(simplePalindrome));
+    }
 }
