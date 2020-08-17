@@ -44,7 +44,7 @@ public class LongestPalindromicSubstring {
 
     private String findPalindromeFromLeft(String string, char[] charArray) {
         String currentLongest = "";
-        for (int leftPointer = 0; leftPointer < string.length() - 2; leftPointer++) {
+        for (int leftPointer = 0; leftPointer < string.length() - 1; leftPointer++) {
             String foundPalindrome = findLongestPalindromeFromPositions(
                     string,
                     charArray,
