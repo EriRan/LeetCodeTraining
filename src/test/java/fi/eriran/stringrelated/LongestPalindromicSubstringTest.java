@@ -37,6 +37,11 @@ class LongestPalindromicSubstringTest {
     }
 
     @Test
+    void singleCharacter() {
+        assertEquals("a", new LongestPalindromicSubstring().longestPalindrome("a"));
+    }
+
+    @Test
     void twoSameCharacters() {
         assertEquals("aa", new LongestPalindromicSubstring().longestPalindrome("aa"));
     }
@@ -47,7 +52,7 @@ class LongestPalindromicSubstringTest {
     }
 
     @Test
-    void singleCharacter() {
-        assertEquals("a", new LongestPalindromicSubstring().longestPalindrome("a"));
+    void threeCharactersWithOneTwoCharacterPalindrome() {
+        assertEquals("bb", new LongestPalindromicSubstring().longestPalindrome("abb"));
     }
 }
