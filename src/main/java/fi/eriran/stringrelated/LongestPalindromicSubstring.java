@@ -36,7 +36,12 @@ public class LongestPalindromicSubstring {
 
         String palindromeFromLeft = findPalindromeFromLeft(string, charArray);
         String palindromeFromRight = findPalindromeFromRight(string, charArray);
-        if (palindromeFromLeft.length() > palindromeFromRight.length()) {
+
+        //If no palindromes longer than one character are found, return the first character of the String
+        //LeetCode submission tests required this
+        if (palindromeFromLeft.isEmpty() && palindromeFromRight.isEmpty()) {
+            return String.valueOf(string.charAt(0));
+        } else if (palindromeFromLeft.length() > palindromeFromRight.length()) {
             return palindromeFromLeft;
         }
         return palindromeFromRight;
