@@ -25,4 +25,14 @@ class LongestPalindromicSubstringTest {
         String simplePalindrome = "saippuakivikauppias";
         assertEquals(simplePalindrome, new LongestPalindromicSubstring().longestPalindrome(simplePalindrome));
     }
+
+    @Test
+    void palindromeAtEnd() {
+        assertEquals("otto", new LongestPalindromicSubstring().longestPalindrome("jgkeowotto"));
+    }
+
+    @Test
+    void palindromeAtStart() {
+        assertEquals("otto", new LongestPalindromicSubstring().longestPalindrome("ottomjosidf"));
+    }
 }
