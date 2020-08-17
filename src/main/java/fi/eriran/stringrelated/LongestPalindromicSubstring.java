@@ -16,7 +16,7 @@ public class LongestPalindromicSubstring {
     }
 
     private String findLongest(String string) {
-        //Hardcoded simple cases but Strings longer than 3 are calculated
+        //Hardcoded simple cases but Strings longer than 2 are calculated
         switch (string.length()) {
             case 1:
                 return string;
@@ -24,13 +24,7 @@ public class LongestPalindromicSubstring {
                 if (string.charAt(0) == string.charAt(1)) {
                     return string;
                 } else {
-                    return "";
-                }
-            case 3:
-                if (string.charAt(0) == string.charAt(2)) {
-                    return string;
-                } else {
-                    return "";
+                    return String.valueOf(string.charAt(0));
                 }
             default:
                 return searchForPalindrome(string);
