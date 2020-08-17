@@ -60,7 +60,7 @@ public class LongestPalindromicSubstring {
 
     private String findPalindromeFromRight(String string, char[] charArray) {
         String currentLongest = "";
-        for (int rightPointer = charArray.length - 1; rightPointer > 1; rightPointer--) {
+        for (int rightPointer = charArray.length - 1; rightPointer > 0; rightPointer--) {
             String foundPalindrome = findLongestPalindromeFromPositions(
                     string,
                     charArray,
