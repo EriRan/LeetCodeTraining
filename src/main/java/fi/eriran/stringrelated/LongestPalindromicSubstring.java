@@ -6,7 +6,7 @@ package fi.eriran.stringrelated;
 public class LongestPalindromicSubstring {
 
     public String longestPalindrome(String string) {
-        if (string == null || string.isEmpty() || string.length() < 2) {
+        if (string == null || string.isEmpty()) {
             return "";
         }
         if (string.length() > 1000) {
@@ -16,20 +16,28 @@ public class LongestPalindromicSubstring {
     }
 
     private String findLongest(String string) {
-        //Handle simple cases quickly
-        if (string.length() == 2) {
-            if (string.charAt(0) == string.charAt(1)) {
+        //Hardcoded simple cases but Strings longer than 3 are calculated
+        switch (string.length()) {
+            case 1:
                 return string;
-            } else {
-                return "";
-            }
-        } else if (string.length() == 3) {
-            if (string.charAt(0) == string.charAt(2)) {
-                return string;
-            } else {
-                return "";
-            }
+            case 2:
+                if (string.charAt(0) == string.charAt(1)) {
+                    return string;
+                } else {
+                    return "";
+                }
+            case 3:
+                if (string.charAt(0) == string.charAt(2)) {
+                    return string;
+                } else {
+                    return "";
+                }
+            default:
+                return searchForPalindrome(string);
         }
+    }
+
+    private String searchForPalindrome(String string) {
         char[] charArray = string.toCharArray();
 
         String palindromeFromLeft = findPalindromeFromLeft(string, charArray);
