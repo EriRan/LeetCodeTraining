@@ -43,7 +43,7 @@ class LongestPalindromicSubstringTest {
 
     @Test
     void twoDifferentCharacters() {
-        assertEquals("", new LongestPalindromicSubstring().longestPalindrome("za"));
+        assertEquals("z", new LongestPalindromicSubstring().longestPalindrome("za"));
     }
 
     @Test
