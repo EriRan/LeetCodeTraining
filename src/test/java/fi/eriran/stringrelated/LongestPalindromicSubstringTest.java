@@ -33,6 +33,16 @@ class LongestPalindromicSubstringTest {
 
     @Test
     void palindromeAtStart() {
-        assertEquals("otto", new LongestPalindromicSubstring().longestPalindrome("ottomjosidf"));
+        assertEquals("otto", new LongestPalindromicSubstring().longestPalindrome("ottomowoidf"));
+    }
+
+    @Test
+    void twoSameCharacters() {
+        assertEquals("aa", new LongestPalindromicSubstring().longestPalindrome("aa"));
+    }
+
+    @Test
+    void twoDifferentCharacters() {
+        assertEquals("", new LongestPalindromicSubstring().longestPalindrome("za"));
     }
 }
