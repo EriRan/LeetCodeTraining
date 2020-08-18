@@ -21,4 +21,18 @@ class MedianOfTwoSortedArraysTest {
         assertEquals(6.0, new MedianOfTwoSortedArrays().findMedianSortedArrays(new int[] {}, new int[] {6}));
     }
 
+    @Test
+    void oneArrayEmptyEven() {
+        assertEquals(3.0, new MedianOfTwoSortedArrays().findMedianSortedArrays(new int[] {}, new int[] {1,2,4,6}));
+    }
+
+    @Test
+    void oneArrayEmptyOdd() {
+        assertEquals(2.0, new MedianOfTwoSortedArrays().findMedianSortedArrays(new int[] {1,2,4}, new int[] {}));
+    }
+
+    @Test
+    void oneArrayEmptyTwoValues() {
+        assertEquals(2.5, new MedianOfTwoSortedArrays().findMedianSortedArrays(new int[] {2,3}, new int[] {}));
+    }
 }

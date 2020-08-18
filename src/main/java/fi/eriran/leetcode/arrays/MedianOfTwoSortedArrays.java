@@ -11,20 +11,40 @@ public class MedianOfTwoSortedArrays {
 
     public double findMedianSortedArrays(int[] numbersOne, int[] numbersTwo) {
         int totalLength = numbersOne.length + numbersTwo.length;
+        if (numbersOne.length == 0 || numbersTwo.length == 0) {
+            return findMedianSpecialCases(numbersOne, numbersTwo, totalLength);
+        }
         if (isEven(totalLength)) {
             //Mid point is between totalLength/2 and totalLength/2 + 1
             //Minus one so that we get the correct array index for the first midpoint
             //Second midpoint is just the first plus 1
             return findMedianFromTwoMiddlePoints(numbersOne, numbersTwo, (totalLength / 2) - 1);
         } else {
-            if (totalLength == 1) {
-                return getFirstOfNonEmptyArray(numbersOne, numbersTwo);
-            }
+
             //Mid point is at totalLength/2 rounded up except if its one
             //Total length divided with two so that we get the array index that is at the half point of the length of
             // the two arrays (Eg. arrays with total size of 3 divided with 2 == 1.5 becomes 1 because integers are
             // rounded down during division)
             return findMedianFromMidpoint(numbersOne, numbersTwo, (totalLength / 2));
+        }
+    }
+
+    private double findMedianSpecialCases(int[] numbersOne, int[] numbersTwo, int totalLength) {
+        if (totalLength == 1) {
+            return getFirstOfNonEmptyArray(numbersOne, numbersTwo);
+        }
+        if (numbersOne.length == 0) {
+            return findMedianFromOneArray(numbersTwo, totalLength);
+        } else {
+            return findMedianFromOneArray(numbersOne, totalLength);
+        }
+    }
+
+    private double findMedianFromOneArray(int[] numbers, int totalLength) {
+        if (isEven(totalLength)) {
+            return (numbers[(totalLength / 2) - 1] + numbers[(totalLength / 2)]) / 2.0;
+        } else {
+            return numbers[(totalLength / 2)];
         }
     }
 
