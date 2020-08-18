@@ -1,4 +1,4 @@
-package fi.eriran.algorithm.arrays;
+package fi.eriran.leetcode.arrays;
 
 import org.junit.jupiter.api.Test;
 

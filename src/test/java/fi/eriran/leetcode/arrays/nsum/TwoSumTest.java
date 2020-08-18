@@ -1,4 +1,4 @@
-package fi.eriran.algorithm.arrays.nsum;
+package fi.eriran.leetcode.arrays.nsum;
 
 import org.junit.jupiter.api.Test;
 

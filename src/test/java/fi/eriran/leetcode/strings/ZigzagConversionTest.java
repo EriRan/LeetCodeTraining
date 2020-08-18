@@ -1,6 +1,5 @@
-package fi.eriran.algorithm.strings;
+package fi.eriran.leetcode.strings;
 
-import fi.eriran.algorithm.strings.ZigzagConversion;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

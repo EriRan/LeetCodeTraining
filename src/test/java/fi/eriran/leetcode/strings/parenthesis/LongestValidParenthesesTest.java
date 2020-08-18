@@ -1,4 +1,4 @@
-package fi.eriran.algorithm.strings.parenthesis;
+package fi.eriran.leetcode.strings.parenthesis;
 
 import org.junit.jupiter.api.Test;
 
