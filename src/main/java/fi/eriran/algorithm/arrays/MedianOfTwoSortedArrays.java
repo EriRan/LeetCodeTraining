@@ -15,9 +15,7 @@ public class MedianOfTwoSortedArrays {
             //Mid point is between totalLength/2 and totalLength/2 + 1
             //Minus one so that we get the correct array index for the first midpoint
             //Second midpoint is just the first plus 1
-            int midpointIndexOne = (totalLength / 2) - 1;
-            int midpointIndexTwo = midpointIndexOne + 1;
-            return findMedianFromTwoMiddlePoints(numbersOne, numbersTwo, midpointIndexOne, midpointIndexTwo);
+            return findMedianFromTwoMiddlePoints(numbersOne, numbersTwo, (totalLength / 2) - 1);
         } else {
             if (totalLength == 1) {
                 return getFirstOfNonEmptyArray(numbersOne, numbersTwo);
@@ -30,60 +28,69 @@ public class MedianOfTwoSortedArrays {
         }
     }
 
-    private boolean isEven(int totalLength) {
-        return totalLength % 2 == 0;
+    /**
+     * Find median when the total length was even. This means the median must calculated by calculating the average of
+     * the two numbers in the middle.
+     */
+    private double findMedianFromTwoMiddlePoints(int[] numbersOne,
+                                                 int[] numbersTwo,
+                                                 int midpointIndex) {
+        int secondMidpointIndex = midpointIndex + 1;
+        int numbersOnePointer = 0;
+        int numbersTwoPointer = 0;
+        int[] twoMedianNumbers = new int[2];
+        for (int i = 0; i <= secondMidpointIndex; i++) {
+            int selectedNumber;
+            if (isNumbersOneArrayUsable(numbersOne, numbersTwo, numbersOnePointer, numbersTwoPointer)) {
+                selectedNumber = numbersOne[numbersOnePointer];
+                numbersOnePointer++;
+            } else {
+                selectedNumber = numbersTwo[numbersTwoPointer];
+                numbersTwoPointer++;
+            }
+            if (i == midpointIndex) {
+                twoMedianNumbers[0] = selectedNumber;
+            } else if (i == secondMidpointIndex) {
+                twoMedianNumbers[1] = selectedNumber;
+            }
+        }
+        return (twoMedianNumbers[0] + twoMedianNumbers[1]) / 2.0;
     }
 
+    /**
+     * Find the median when the total length of the two arrays is odd, meaning that the median is just the number in
+     * the middle.
+     */
     private double findMedianFromMidpoint(int[] numbersOne, int[] numbersTwo, int midpointIndex) {
         int numbersOnePointer = 0;
         int numbersTwoPointer = 0;
-        Integer selectedNumber = null;
+        int arrayToUse = 1;
         for (int i = 0; i <= midpointIndex; i++) {
-            if (numbersOnePointer != numbersOne.length
-                    && (numbersTwoPointer == numbersTwo.length
-                    || numbersOne[numbersOnePointer] < numbersTwo[numbersTwoPointer])) {
-                selectedNumber = numbersOne[numbersOnePointer];
+            if (isNumbersOneArrayUsable(numbersOne, numbersTwo, numbersOnePointer, numbersTwoPointer)) {
+                arrayToUse = 1;
                 numbersOnePointer++;
             } else {
-                selectedNumber = numbersTwo[numbersTwoPointer];
+                arrayToUse = 2;
                 numbersTwoPointer++;
             }
         }
-        if (selectedNumber == null) {
-            throw new IllegalStateException("Unable to find midpoint number");
+        if (arrayToUse == 1) {
+            return numbersOne[numbersOnePointer - 1];
         }
-        return selectedNumber;
+        return numbersTwo[numbersTwoPointer - 1];
     }
 
-    private double findMedianFromTwoMiddlePoints(int[] numbersOne,
-                                                 int[] numbersTwo,
-                                                 int midpointIndexOne,
-                                                 int midpointIndexTwo) {
-        int numbersOnePointer = 0;
-        int numbersTwoPointer = 0;
-        Double selectedNumberOne = null;
-        Double selectedNumberTwo = null;
-        for (int i = 0; i <= midpointIndexTwo; i++) {
-            int selectedNumber;
-            if (numbersOnePointer != numbersOne.length
-                    && (numbersTwoPointer == numbersTwo.length
-                    || numbersOne[numbersOnePointer] < numbersTwo[numbersTwoPointer])) {
-                selectedNumber = numbersOne[numbersOnePointer];
-                numbersOnePointer++;
-            } else {
-                selectedNumber = numbersTwo[numbersTwoPointer];
-                numbersTwoPointer++;
-            }
-            if (i == midpointIndexOne) {
-                selectedNumberOne = (double) selectedNumber;
-            } else if (i == midpointIndexTwo) {
-                selectedNumberTwo = (double) selectedNumber;
-            }
-        }
-        if (selectedNumberOne == null || selectedNumberTwo == null) {
-            throw new IllegalStateException("Unable to find midpoint number");
-        }
-        return (selectedNumberOne + selectedNumberTwo) / 2.0;
+    /**
+     * Whether number one array still has usable indexes or number two array has no usable indexes left or if the
+     * number one array's current index has a smaller value than number two array's current index
+     */
+    private boolean isNumbersOneArrayUsable(int[] numbersOne,
+                                            int[] numbersTwo,
+                                            int numbersOnePointer,
+                                            int numbersTwoPointer) {
+        return numbersOnePointer != numbersOne.length
+                && (numbersTwoPointer == numbersTwo.length
+                || numbersOne[numbersOnePointer] < numbersTwo[numbersTwoPointer]);
     }
 
     private double getFirstOfNonEmptyArray(int[] nums1, int[] nums2) {
@@ -91,5 +98,9 @@ public class MedianOfTwoSortedArrays {
             return nums2[0];
         }
         return nums1[0];
+    }
+
+    private boolean isEven(int totalLength) {
+        return totalLength % 2 == 0;
     }
 }
