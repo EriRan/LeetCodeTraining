@@ -1,4 +1,4 @@
-package fi.eriran.algorithm.nsum;
+package fi.eriran.algorithm.arrays.nsum;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.junit.jupiter.api.Test;

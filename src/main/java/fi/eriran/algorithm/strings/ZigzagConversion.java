@@ -1,4 +1,4 @@
-package fi.eriran.algorithm.zigzag;
+package fi.eriran.algorithm.strings;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,5 +1,6 @@
-package fi.eriran.algorithm.zigzag;
+package fi.eriran.algorithm.strings;
 
+import fi.eriran.algorithm.strings.ZigzagConversion;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
