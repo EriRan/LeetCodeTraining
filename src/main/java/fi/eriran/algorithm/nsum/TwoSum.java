@@ -1,4 +1,4 @@
-package fi.eriran.nsum;
+package fi.eriran.algorithm.nsum;
 
 /**
  * Given an array of integers, return indices of the two numbers such that they add up to a specific target.

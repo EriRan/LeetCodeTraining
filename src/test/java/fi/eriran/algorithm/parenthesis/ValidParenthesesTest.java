@@ -1,4 +1,4 @@
-package fi.eriran.parenthesis;
+package fi.eriran.algorithm.parenthesis;
 
 import org.junit.jupiter.api.Test;
 

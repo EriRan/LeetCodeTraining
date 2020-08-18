@@ -1,4 +1,4 @@
-package fi.eriran.stringrelated;
+package fi.eriran.algorithm.stringrelated;
 
 import org.junit.jupiter.api.Test;
 
