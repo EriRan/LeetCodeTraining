@@ -64,17 +64,17 @@ public class MedianOfTwoSortedArrays {
     private double findMedianFromMidpoint(int[] numbersOne, int[] numbersTwo, int midpointIndex) {
         int numbersOnePointer = 0;
         int numbersTwoPointer = 0;
-        int arrayToUse = 1;
+        boolean useNumbersOne = true;
         for (int i = 0; i <= midpointIndex; i++) {
             if (isNumbersOneArrayUsable(numbersOne, numbersTwo, numbersOnePointer, numbersTwoPointer)) {
-                arrayToUse = 1;
+                useNumbersOne = true;
                 numbersOnePointer++;
             } else {
-                arrayToUse = 2;
+                useNumbersOne = false;
                 numbersTwoPointer++;
             }
         }
-        if (arrayToUse == 1) {
+        if (useNumbersOne) {
             return numbersOne[numbersOnePointer - 1];
         }
         return numbersTwo[numbersTwoPointer - 1];
