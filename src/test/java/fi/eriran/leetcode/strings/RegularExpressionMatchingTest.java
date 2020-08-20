@@ -30,4 +30,9 @@ class RegularExpressionMatchingTest {
     void example5() {
         assertFalse(new RegularExpressionMatching().isMatch("mississippi", "mis*is*p*."));
     }
+
+    @Test
+    void multipleWildCardsAtEnd() {
+        assertTrue(new RegularExpressionMatching().isMatch("aab", "c*a*b***************************"));
+    }
 }
