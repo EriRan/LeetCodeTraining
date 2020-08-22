@@ -32,10 +32,10 @@ public class RegularExpressionMatching {
     private boolean validateMatchesPattern(String string, String pattern) {
         int stringCharPointer = 0;
         int patternCharPointer = 0;
-        while (stringCharPointer < string.length() && patternCharPointer < pattern.length()) {
-            char currentStringChar = string.charAt(stringCharPointer);
-            char currentPatternChar = pattern.charAt(patternCharPointer);
-            if (patternCharPointer != pattern.length() - 1
+        while (stringCharPointer < string.length() || patternCharPointer < pattern.length()) {
+            char currentStringChar = getCurrentOrLastChar(string, stringCharPointer);
+            char currentPatternChar = getCurrentOrLastChar(pattern, patternCharPointer);
+            if (patternCharPointer < pattern.length() - 1
                     && pattern.charAt(patternCharPointer + 1) == MATCH_ZERO_OR_MORE_PRECEDING) {
                 //Next character is zero or more preceding token
                 switch (currentPatternChar) {
@@ -53,11 +53,11 @@ public class RegularExpressionMatching {
                                 currentPatternChar
                         );
                         //Go forward 2 indexes to skip the wildcard char or to the end of the pattern if we run out of length
-                        if (pattern.length() > patternCharPointer + 2) {
+                        if (patternCharPointer + 2 < pattern.length()) {
                             patternCharPointer += 2;
                         }
                         else {
-                            patternCharPointer = pattern.length() - 1;
+                            patternCharPointer = pattern.length();
                         }
                 }
             } else {
@@ -73,11 +73,19 @@ public class RegularExpressionMatching {
                             return false;
                         }
                 }
-                patternCharPointer++;
                 stringCharPointer++;
+                patternCharPointer++;
             }
         }
+        //True if both pattern and string iteration reached end
         return stringCharPointer == string.length() && patternCharPointer == pattern.length();
+    }
+
+    private char getCurrentOrLastChar(String string, int charPointer) {
+        if (charPointer < string.length()) {
+            return string.charAt(charPointer);
+        }
+        return string.charAt(string.length() - 1);
     }
 
     private int incrementStringUntilNonMatchEncountered(int stringCharPointer, String string, char matchZeroOrMore) {
@@ -85,8 +93,11 @@ public class RegularExpressionMatching {
             return stringCharPointer;
         }
         char currentChar = string.charAt(stringCharPointer);
-        while (currentChar == matchZeroOrMore && stringCharPointer < string.length() - 1) {
+        while (currentChar == matchZeroOrMore) {
             stringCharPointer++;
+            if (stringCharPointer == string.length()) {
+                return string.length();
+            }
             currentChar = string.charAt(stringCharPointer);
         }
         return stringCharPointer;
