@@ -32,7 +32,7 @@ public class RegularExpressionMatching {
     private boolean validateMatchesPattern(String string, String pattern) {
         int stringCharPointer = 0;
         int patternCharPointer = 0;
-        while (stringCharPointer < string.length() || patternCharPointer < pattern.length()) {
+        while (patternCharPointer < pattern.length() - 1) {
             char currentStringChar = getCurrentOrLastChar(string, stringCharPointer);
             char currentPatternChar = getCurrentOrLastChar(pattern, patternCharPointer);
             if (patternCharPointer < pattern.length() - 1
@@ -57,7 +57,8 @@ public class RegularExpressionMatching {
                             patternCharPointer += 2;
                         }
                         else {
-                            patternCharPointer = pattern.length();
+                            //Pattern runs out. Make the final check for the string here
+                            return stringCharPointer == string.length() - 1;
                         }
                 }
             } else {
@@ -73,12 +74,16 @@ public class RegularExpressionMatching {
                             return false;
                         }
                 }
-                stringCharPointer++;
-                patternCharPointer++;
+                if (stringCharPointer + 1 < string.length()) {
+                    stringCharPointer++;
+                }
+                if (patternCharPointer + 1 < pattern.length()) {
+                    patternCharPointer++;
+                }
             }
         }
         //True if both pattern and string iteration reached end
-        return stringCharPointer == string.length() && patternCharPointer == pattern.length();
+        return stringCharPointer == string.length() - 1 && patternCharPointer == pattern.length() - 1;
     }
 
     private char getCurrentOrLastChar(String string, int charPointer) {
@@ -95,8 +100,9 @@ public class RegularExpressionMatching {
         char currentChar = string.charAt(stringCharPointer);
         while (currentChar == matchZeroOrMore) {
             stringCharPointer++;
-            if (stringCharPointer == string.length()) {
-                return string.length();
+            if (stringCharPointer >= string.length()) {
+                //End of the string reached
+                return string.length() - 1;
             }
             currentChar = string.charAt(stringCharPointer);
         }
