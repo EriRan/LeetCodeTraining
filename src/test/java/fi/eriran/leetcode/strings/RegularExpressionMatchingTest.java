@@ -42,6 +42,11 @@ class RegularExpressionMatchingTest {
     }
 
     @Test
+    void submissionTest3() {
+        assertFalse(new RegularExpressionMatching().isMatch("aaa", "aaaa"));
+    }
+
+    @Test
     void multipleWildCardsAtEnd() {
         assertTrue(new RegularExpressionMatching().isMatch("aab", "c*a*b***************************"));
     }
