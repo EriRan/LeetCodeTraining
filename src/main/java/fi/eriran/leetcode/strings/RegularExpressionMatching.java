@@ -32,6 +32,7 @@ public class RegularExpressionMatching {
     private boolean validateMatchesPattern(String string, String pattern) {
         int stringCharPointer = 0;
         int patternCharPointer = 0;
+        boolean stringHasRanOut = false;
         while (patternCharPointer < pattern.length() - 1) {
             char currentStringChar = getCurrentOrLastChar(string, stringCharPointer);
             char currentPatternChar = getCurrentOrLastChar(pattern, patternCharPointer);
@@ -70,7 +71,7 @@ public class RegularExpressionMatching {
                         //This has no affect here
                         break;
                     default:
-                        if (currentStringChar != currentPatternChar) {
+                        if (currentStringChar != currentPatternChar || stringHasRanOut) {
                             return false;
                         }
                 }
@@ -80,6 +81,9 @@ public class RegularExpressionMatching {
                 if (patternCharPointer + 1 < pattern.length()) {
                     patternCharPointer++;
                 }
+            }
+            if (stringCharPointer == string.length() - 1) {
+                stringHasRanOut = true;
             }
         }
         //True if both pattern and string iteration reached end
