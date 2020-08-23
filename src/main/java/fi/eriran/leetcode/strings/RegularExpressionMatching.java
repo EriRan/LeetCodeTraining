@@ -40,13 +40,10 @@ public class RegularExpressionMatching {
                     && pattern.charAt(patternCharPointer + 1) == MATCH_ZERO_OR_MORE_PRECEDING) {
                 //Next character is zero or more preceding token
                 switch (currentPatternChar) {
-                    case MATCH_ANY:
-                        //This can end with the whole string being valid
-                        return patternCharPointer == pattern.length() - 1
-                                || allRemainingAreWildcards(patternCharPointer, pattern);
                     case MATCH_ZERO_OR_MORE_PRECEDING:
                         patternCharPointer++;
                         break;
+                    case MATCH_ANY:
                     default:
                         stringCharPointer = incrementStringUntilNonMatchEncountered(
                                 stringCharPointer,
@@ -98,6 +95,9 @@ public class RegularExpressionMatching {
     }
 
     private int incrementStringUntilNonMatchEncountered(int stringCharPointer, String string, char matchZeroOrMore) {
+        if (matchZeroOrMore == MATCH_ANY) {
+            return string.length();
+        }
         if (stringCharPointer + 1 >= string.length()) {
             return stringCharPointer;
         }
@@ -106,21 +106,11 @@ public class RegularExpressionMatching {
             stringCharPointer++;
             if (stringCharPointer >= string.length()) {
                 //End of the string reached
-                return string.length() - 1;
+                return string.length();
             }
             currentChar = string.charAt(stringCharPointer);
         }
         return stringCharPointer;
-    }
-
-    private boolean allRemainingAreWildcards(int patternCharPointer, String pattern) {
-        char currentPatternChar = pattern.charAt(patternCharPointer);
-        while (currentPatternChar == MATCH_ZERO_OR_MORE_PRECEDING && patternCharPointer < pattern.length() - 1) {
-            patternCharPointer++;
-            currentPatternChar = pattern.charAt(patternCharPointer);
-        }
-        return pattern.charAt(patternCharPointer) == MATCH_ZERO_OR_MORE_PRECEDING
-                && patternCharPointer == pattern.length() - 1;
     }
 
     private void validateArguments(String string, String pattern) {
