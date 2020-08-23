@@ -62,11 +62,6 @@ class RegularExpressionMatchingTest {
     }
 
     @Test
-    void multipleWildCardsAtEnd() {
-        assertTrue(new RegularExpressionMatching().isMatch("aab", "c*a*b***************************"));
-    }
-
-    @Test
     void matchAnyOrMoreWithOneMoreAfter() {
         assertTrue(new RegularExpressionMatching().isMatch("aaa", ".*a"));
     }
