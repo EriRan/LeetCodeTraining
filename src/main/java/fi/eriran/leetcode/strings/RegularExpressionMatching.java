@@ -22,6 +22,8 @@ public class RegularExpressionMatching {
 
     private int stringCharPointer;
     private int patternCharPointer;
+    private Integer matchZeroOrMoreStringCheckpoint;
+    private Integer matchZeroOrMorePatternCheckpoint;
 
     private char currentStringChar;
 
@@ -41,6 +43,7 @@ public class RegularExpressionMatching {
     private void initPrivateVariables() {
         stringCharPointer = 0;
         patternCharPointer = 0;
+        matchZeroOrMoreStringCheckpoint = null;
     }
 
     /**
@@ -60,10 +63,16 @@ public class RegularExpressionMatching {
                         break;
                     case MATCH_ANY:
                     default:
+                        int stringCharPointerBefore = stringCharPointer;
                         incrementStringUntilNonMatchEncountered(
                                 string,
                                 currentPatternChar
                         );
+                        if (stringCharPointerBefore < stringCharPointer) {
+                            //Checkpoint is after the wildcard and represents a situation where the match zero or more
+                            // did not match to any
+                            matchZeroOrMoreStringCheckpoint = stringCharPointerBefore;
+                        }
                         //Go forward 2 indexes to skip the wildcard char or to the end of the pattern if we run out of length
                         if (patternCharPointer + 2 < pattern.length()) {
                             patternCharPointer += 2;
@@ -71,11 +80,21 @@ public class RegularExpressionMatching {
                             //Pattern runs out. Make the final check for the string here
                             return stringCharPointer == string.length();
                         }
+                        if (matchZeroOrMoreStringCheckpoint != null) {
+                            matchZeroOrMorePatternCheckpoint = patternCharPointer;
+                        }
                 }
             } else {
                 if (stringCharPointer == string.length()
                         && !previousWasMatchZeroOrMoreWithSameChar(pattern)) {
-                    return false;
+                    if (matchZeroOrMoreStringCheckpoint == null) {
+                        return false;
+                    } else {
+                        stringCharPointer = matchZeroOrMoreStringCheckpoint;
+                        patternCharPointer = matchZeroOrMorePatternCheckpoint;
+                        matchZeroOrMoreStringCheckpoint = null;
+                        matchZeroOrMorePatternCheckpoint = null;
+                    }
                 }
                 //Next char is not a wildcard so just compare characters at pattern locations
                 switch (currentPatternChar) {
@@ -86,7 +105,14 @@ public class RegularExpressionMatching {
                         break;
                     default:
                         if (currentStringChar != currentPatternChar) {
-                            return false;
+                            if (matchZeroOrMoreStringCheckpoint == null) {
+                                return false;
+                            } else {
+                                stringCharPointer = matchZeroOrMoreStringCheckpoint;
+                                patternCharPointer = matchZeroOrMorePatternCheckpoint;
+                                matchZeroOrMoreStringCheckpoint = null;
+                                matchZeroOrMorePatternCheckpoint = null;
+                            }
                         }
                 }
                 if (stringCharPointer < string.length()) {
