@@ -82,7 +82,22 @@ class RegularExpressionMatchingTest {
     }
 
     @Test
-    void matchAnyOrZero() {
+    void matchAnyOrZeroWithEmptyString() {
         assertTrue(new RegularExpressionMatching().isMatch("", ".*"));
+    }
+
+    @Test
+    void matchAnyOrZeroWithString() {
+        assertTrue(new RegularExpressionMatching().isMatch("SU.CCE*SS", ".*"));
+    }
+
+    @Test
+    void matchZeroOrMoreWithEmptyString() {
+        assertTrue(new RegularExpressionMatching().isMatch("", "c*"));
+    }
+
+    @Test
+    void matchMultipleZeroOrMoreWithEmptyString() {
+        assertTrue(new RegularExpressionMatching().isMatch("", "a*b*c*"));
     }
 }
