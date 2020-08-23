@@ -82,11 +82,6 @@ class RegularExpressionMatchingTest {
     }
 
     @Test
-    void emptyStringWildcardPattern() {
-        assertMatch("", "*");
-    }
-
-    @Test
     void matchAnyOrZeroWithEmptyString() {
         assertMatch("", ".*");
     }
