@@ -11,6 +11,9 @@ package fi.eriran.leetcode.strings;
  * <p>
  * - s could be empty and contains only lowercase letters a-z.
  * - p could be empty and contains only lowercase letters a-z, and characters like . or *.
+ * <p>
+ * This can be solved quickly by using Java's string.matches, but they want to use only MATCH_ANY '.' and the
+ * wildcard '*' so a faster implementation can be created that allows only them
  */
 public class RegularExpressionMatching {
 
