@@ -8,106 +8,116 @@ class RegularExpressionMatchingTest {
 
     @Test
     void example1() {
-        assertFalse(new RegularExpressionMatching().isMatch("aa", "a"));
+        assertNotMatch("aa", "a");
     }
 
     @Test
     void example2() {
-        assertTrue(new RegularExpressionMatching().isMatch("aa", "a*"));
+        assertMatch("aa", "a*");
     }
 
     @Test
     void example3() {
-        assertTrue(new RegularExpressionMatching().isMatch("ab", ".*"));
+        assertMatch("ab", ".*");
     }
 
     @Test
     void example4() {
-        assertTrue(new RegularExpressionMatching().isMatch("aab", "c*a*b"));
+        assertMatch("aab", "c*a*b");
     }
 
     @Test
     void example5() {
-        assertFalse(new RegularExpressionMatching().isMatch("mississippi", "mis*is*p*."));
+        assertNotMatch("mississippi", "mis*is*p*.");
     }
 
     @Test
     void submissionTest1() {
-        assertTrue(new RegularExpressionMatching().isMatch("a", "ab*"));
+        assertMatch("a", "ab*");
     }
 
     @Test
     void submissionTest2() {
-        assertTrue(new RegularExpressionMatching().isMatch("aaa", "a*a"));
+        assertMatch("aaa", "a*a");
     }
 
     @Test
     void submissionTest3() {
-        assertFalse(new RegularExpressionMatching().isMatch("aaa", "aaaa"));
+        assertNotMatch("aaa", "aaaa");
     }
 
     @Test
     void submissionTest4() {
-        assertFalse(new RegularExpressionMatching().isMatch("a", "ab*a"));
+        assertNotMatch("a", "ab*a");
     }
 
     @Test
     void submissionTest5() {
-        assertTrue(new RegularExpressionMatching().isMatch("aaa", "ab*a*c*a"));
+        assertMatch("aaa", "ab*a*c*a");
     }
 
     @Test
     void submissionTest6() {
-        assertTrue(new RegularExpressionMatching().isMatch("ab", ".*.."));
+        assertMatch("ab", ".*..");
     }
 
     @Test
     void submissionTest7() {
-        assertFalse(new RegularExpressionMatching().isMatch("", "."));
+        assertNotMatch("", ".");
     }
 
     @Test
     void submissionTest8() {
-        assertTrue(new RegularExpressionMatching().isMatch("abcdede", "ab.*de"));
+        assertMatch("abcdede", "ab.*de");
     }
 
     @Test
     void matchAnyOrMoreWithOneMoreAfter() {
-        assertTrue(new RegularExpressionMatching().isMatch("aaa", ".*a"));
+        assertMatch("aaa", ".*a");
     }
 
     @Test
     void useZeroMatchInsteadOfAllMatch() {
-        assertTrue(new RegularExpressionMatching().isMatch("aaa", "a*aaa"));
+        assertMatch("aaa", "a*aaa");
     }
 
     @Test
     void emptyStringWildcardPattern() {
-        assertTrue(new RegularExpressionMatching().isMatch("", "*"));
+        assertMatch("", "*");
     }
 
     @Test
     void matchAnyOrZeroWithEmptyString() {
-        assertTrue(new RegularExpressionMatching().isMatch("", ".*"));
+        assertMatch("", ".*");
     }
 
     @Test
     void matchAnyOrZeroWithString() {
-        assertTrue(new RegularExpressionMatching().isMatch("su.cce*ss", ".*"));
+        assertMatch("su.cce*ss", ".*");
     }
 
     @Test
     void matchZeroOrMoreWithEmptyString() {
-        assertTrue(new RegularExpressionMatching().isMatch("", "c*"));
+        assertMatch("", "c*");
     }
 
     @Test
     void matchMultipleZeroOrMoreWithEmptyString() {
-        assertTrue(new RegularExpressionMatching().isMatch("", "a*b*c*"));
+        assertMatch("", "a*b*c*");
     }
 
     @Test
     void matchMultipleZeroOrMoreWithOneRequiredLetterAndEmptyString() {
-        assertFalse(new RegularExpressionMatching().isMatch("", "a*b*c*z"));
+        assertNotMatch("", "a*b*c*z");
+    }
+
+    private void assertMatch(String string, String pattern) {
+        assertTrue(new RegularExpressionMatching().isMatch(string, pattern),
+                "\"" + string + "\" did not match with \"" + pattern + "\"");
+    }
+
+    private void assertNotMatch(String string, String pattern) {
+        assertFalse(new RegularExpressionMatching().isMatch(string, pattern),
+                "\"" + string + "\" matched with \"" + pattern + "\"");
     }
 }
