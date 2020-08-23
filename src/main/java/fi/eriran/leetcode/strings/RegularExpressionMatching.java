@@ -20,8 +20,14 @@ public class RegularExpressionMatching {
     private static final char MATCH_ANY = '.';
     private static final char MATCH_ZERO_OR_MORE_PRECEDING = '*';
 
+    private int stringCharPointer;
+    private int patternCharPointer;
+
+    private char currentStringChar;
+
     public boolean isMatch(String string, String pattern) {
         validateArguments(string, pattern);
+        initPrivateVariables();
         //Shortcuts
         if (string.isEmpty() && pattern.isEmpty()) {
             return true;
@@ -32,15 +38,18 @@ public class RegularExpressionMatching {
         return validateMatchesPattern(string, pattern);
     }
 
+    private void initPrivateVariables() {
+        stringCharPointer = 0;
+        patternCharPointer = 0;
+    }
+
     /**
      * String.length() - 1 == At the last index
      * String.length() == Iteration complete
      */
     private boolean validateMatchesPattern(String string, String pattern) {
-        int stringCharPointer = 0;
-        int patternCharPointer = 0;
         while (patternCharPointer < pattern.length()) {
-            char currentStringChar = getCurrentOrLastChar(string, stringCharPointer);
+            currentStringChar = getCurrentOrLastChar(string, stringCharPointer);
             char currentPatternChar = getCurrentOrLastChar(pattern, patternCharPointer);
             if (patternCharPointer < pattern.length() - 1
                     && pattern.charAt(patternCharPointer + 1) == MATCH_ZERO_OR_MORE_PRECEDING) {
@@ -51,8 +60,7 @@ public class RegularExpressionMatching {
                         break;
                     case MATCH_ANY:
                     default:
-                        stringCharPointer = incrementStringUntilNonMatchEncountered(
-                                stringCharPointer,
+                        incrementStringUntilNonMatchEncountered(
                                 string,
                                 currentPatternChar
                         );
@@ -66,7 +74,7 @@ public class RegularExpressionMatching {
                 }
             } else {
                 if (stringCharPointer == string.length()
-                        && !previousWasMatchZeroOrMoreWithSameChar(pattern, patternCharPointer, currentStringChar)) {
+                        && !previousWasMatchZeroOrMoreWithSameChar(pattern)) {
                     return false;
                 }
                 //Next char is not a wildcard so just compare characters at pattern locations
@@ -91,9 +99,7 @@ public class RegularExpressionMatching {
         return stringCharPointer == string.length();
     }
 
-    private boolean previousWasMatchZeroOrMoreWithSameChar(String pattern,
-                                                           int patternCharPointer,
-                                                           char currentStringChar) {
+    private boolean previousWasMatchZeroOrMoreWithSameChar(String pattern) {
         //To make sure current pattern pointer does not throw indexOutOfBounds at the below condition
         return patternCharPointer > 1
                 //If the last iterated was a MATCH_ZERO_OR_MORE for the same letter that is the current character
@@ -127,23 +133,24 @@ public class RegularExpressionMatching {
         return string.charAt(string.length() - 1);
     }
 
-    private int incrementStringUntilNonMatchEncountered(int stringCharPointer, String string, char matchZeroOrMore) {
+    private void incrementStringUntilNonMatchEncountered(String string, char matchZeroOrMore) {
         if (matchZeroOrMore == MATCH_ANY) {
-            return string.length();
+            stringCharPointer = string.length();
+            return;
         }
         if (stringCharPointer + 1 >= string.length()) {
-            return stringCharPointer;
+            return;
         }
         char currentChar = string.charAt(stringCharPointer);
         while (currentChar == matchZeroOrMore) {
             stringCharPointer++;
             if (stringCharPointer >= string.length()) {
                 //End of the string reached
-                return string.length();
+                stringCharPointer = string.length();
+                return;
             }
             currentChar = string.charAt(stringCharPointer);
         }
-        return stringCharPointer;
     }
 
     private void validateArguments(String string, String pattern) {
