@@ -38,9 +38,10 @@ public class RegularExpressionMatching {
             if (".*".equals(pattern)) {
                 return true;
             }
-            if (string.isEmpty()) {
-                return pattern.length() == 1
-                        && MATCH_ZERO_OR_MORE_PRECEDING == pattern.charAt(0);
+            if (string.isEmpty()
+                    && (pattern.length() == 1
+                    && MATCH_ZERO_OR_MORE_PRECEDING == pattern.charAt(0))) {
+                return true;
             }
         }
 
@@ -160,6 +161,9 @@ public class RegularExpressionMatching {
     }
 
     private char getCurrentOrLastChar(String string, int charPointer) {
+        if (string.isEmpty()) {
+            return Character.UNASSIGNED;
+        }
         if (charPointer < string.length()) {
             return string.charAt(charPointer);
         }
