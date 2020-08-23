@@ -75,4 +75,9 @@ class RegularExpressionMatchingTest {
     void useZeroMatchInsteadOfAllMatch() {
         assertTrue(new RegularExpressionMatching().isMatch("aaa", "a*aaa"));
     }
+
+    @Test
+    void emptyStringWildcardPattern() {
+        assertTrue(new RegularExpressionMatching().isMatch("", "*"));
+    }
 }
