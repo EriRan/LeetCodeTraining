@@ -94,9 +94,27 @@ public class RegularExpressionMatching {
         //To make sure current pattern pointer does not throw indexOutOfBounds at the below condition
         return patternCharPointer > 1
                 //If the last iterated was a MATCH_ZERO_OR_MORE for the same letter that is the current character
-                && (pattern.charAt(patternCharPointer - 1) == MATCH_ZERO_OR_MORE_PRECEDING
-                && (pattern.charAt(patternCharPointer - 2) == currentStringChar
-                || pattern.charAt(patternCharPointer - 2) == MATCH_ANY));
+                && anyPreviousMatchZeroOrMoreForCurrentChar(pattern, patternCharPointer, currentStringChar);
+    }
+
+    /**
+     * Dive in to previous characters and check if they contain a wildcard for the current char
+     */
+    private boolean anyPreviousMatchZeroOrMoreForCurrentChar(String pattern,
+                                                             int patternCharPointer,
+                                                             char currentStringChar) {
+        int currentDivePointer = patternCharPointer;
+        while (currentDivePointer > 1) {
+            if (pattern.charAt(currentDivePointer - 1) != MATCH_ZERO_OR_MORE_PRECEDING) {
+                return false;
+            }
+            if (pattern.charAt(currentDivePointer - 2) == currentStringChar
+                    || pattern.charAt(currentDivePointer - 2) == MATCH_ANY) {
+                return true;
+            }
+            currentDivePointer -= 2;
+        }
+        return false;
     }
 
     private char getCurrentOrLastChar(String string, int charPointer) {
