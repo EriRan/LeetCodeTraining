@@ -80,4 +80,9 @@ class RegularExpressionMatchingTest {
     void emptyStringWildcardPattern() {
         assertTrue(new RegularExpressionMatching().isMatch("", "*"));
     }
+
+    @Test
+    void matchAnyOrZero() {
+        assertTrue(new RegularExpressionMatching().isMatch("", ".*"));
+    }
 }
