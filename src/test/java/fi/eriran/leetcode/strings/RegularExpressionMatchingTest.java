@@ -67,6 +67,11 @@ class RegularExpressionMatchingTest {
     }
 
     @Test
+    void submissionTest8() {
+        assertTrue(new RegularExpressionMatching().isMatch("abcdede", "ab.*de"));
+    }
+
+    @Test
     void matchAnyOrMoreWithOneMoreAfter() {
         assertTrue(new RegularExpressionMatching().isMatch("aaa", ".*a"));
     }
