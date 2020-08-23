@@ -88,7 +88,7 @@ class RegularExpressionMatchingTest {
 
     @Test
     void matchAnyOrZeroWithString() {
-        assertTrue(new RegularExpressionMatching().isMatch("SU.CCE*SS", ".*"));
+        assertTrue(new RegularExpressionMatching().isMatch("su.cce*ss", ".*"));
     }
 
     @Test
