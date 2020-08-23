@@ -63,7 +63,7 @@ class RegularExpressionMatchingTest {
 
     @Test
     void submissionTest7() {
-        assertTrue(new RegularExpressionMatching().isMatch("", "."));
+        assertFalse(new RegularExpressionMatching().isMatch("", "."));
     }
 
     @Test
