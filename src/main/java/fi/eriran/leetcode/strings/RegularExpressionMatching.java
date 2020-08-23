@@ -29,11 +29,14 @@ public class RegularExpressionMatching {
         return validateMatchesPattern(string, pattern);
     }
 
+    /**
+     * String.length() - 1 == At the last index
+     * String.length() == Iteration complete
+     */
     private boolean validateMatchesPattern(String string, String pattern) {
         int stringCharPointer = 0;
         int patternCharPointer = 0;
-        boolean stringHasRanOut = false;
-        while (patternCharPointer < pattern.length() - 1) {
+        while (patternCharPointer < pattern.length()) {
             char currentStringChar = getCurrentOrLastChar(string, stringCharPointer);
             char currentPatternChar = getCurrentOrLastChar(pattern, patternCharPointer);
             if (patternCharPointer < pattern.length() - 1
@@ -53,13 +56,16 @@ public class RegularExpressionMatching {
                         //Go forward 2 indexes to skip the wildcard char or to the end of the pattern if we run out of length
                         if (patternCharPointer + 2 < pattern.length()) {
                             patternCharPointer += 2;
-                        }
-                        else {
+                        } else {
                             //Pattern runs out. Make the final check for the string here
-                            return stringCharPointer == string.length() - 1;
+                            return stringCharPointer == string.length();
                         }
                 }
             } else {
+                if (stringCharPointer == string.length()
+                        && !previousWasMatchZeroOrMoreWithSameChar(pattern, patternCharPointer, currentStringChar)) {
+                    return false;
+                }
                 //Next char is not a wildcard so just compare characters at pattern locations
                 switch (currentPatternChar) {
                     case MATCH_ANY:
@@ -68,23 +74,29 @@ public class RegularExpressionMatching {
                         //This has no affect here
                         break;
                     default:
-                        if (currentStringChar != currentPatternChar || stringHasRanOut) {
+                        if (currentStringChar != currentPatternChar) {
                             return false;
                         }
                 }
-                if (stringCharPointer + 1 < string.length()) {
+                if (stringCharPointer < string.length()) {
                     stringCharPointer++;
                 }
-                if (patternCharPointer + 1 < pattern.length()) {
-                    patternCharPointer++;
-                }
-            }
-            if (stringCharPointer == string.length() - 1) {
-                stringHasRanOut = true;
+                patternCharPointer++;
             }
         }
-        //True if both pattern and string iteration reached end
-        return stringCharPointer == string.length() - 1 && patternCharPointer == pattern.length() - 1;
+        //True if string iteration has reached it's end
+        return stringCharPointer == string.length();
+    }
+
+    private boolean previousWasMatchZeroOrMoreWithSameChar(String pattern,
+                                                           int patternCharPointer,
+                                                           char currentStringChar) {
+        //To make sure current pattern pointer does not throw indexOutOfBounds at the below condition
+        return patternCharPointer > 1
+                //If the last iterated was a MATCH_ZERO_OR_MORE for the same letter that is the current character
+                && (pattern.charAt(patternCharPointer - 1) == MATCH_ZERO_OR_MORE_PRECEDING
+                && (pattern.charAt(patternCharPointer - 2) == currentStringChar
+                || pattern.charAt(patternCharPointer - 2) == MATCH_ANY));
     }
 
     private char getCurrentOrLastChar(String string, int charPointer) {
