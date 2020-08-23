@@ -32,8 +32,10 @@ public class RegularExpressionMatching {
         validateArguments(string, pattern);
         initPrivateVariables();
         //Shortcuts
-        if (string.isEmpty() && pattern.isEmpty()) {
-            return true;
+        if (string.isEmpty()) {
+            if (pattern.isEmpty()) {
+                return true;
+            } else return pattern.length() == 1 && MATCH_ZERO_OR_MORE_PRECEDING == pattern.charAt(0);
         }
         if (".*".equals(pattern)) {
             return true;
