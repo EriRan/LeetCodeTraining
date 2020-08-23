@@ -100,4 +100,9 @@ class RegularExpressionMatchingTest {
     void matchMultipleZeroOrMoreWithEmptyString() {
         assertTrue(new RegularExpressionMatching().isMatch("", "a*b*c*"));
     }
+
+    @Test
+    void matchMultipleZeroOrMoreWithOneRequiredLetterAndEmptyString() {
+        assertFalse(new RegularExpressionMatching().isMatch("", "a*b*c*z"));
+    }
 }
