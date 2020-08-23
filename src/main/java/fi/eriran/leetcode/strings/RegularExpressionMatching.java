@@ -32,14 +32,18 @@ public class RegularExpressionMatching {
         validateArguments(string, pattern);
         initPrivateVariables();
         //Shortcuts
-        if (string.isEmpty()) {
-            if (pattern.isEmpty()) {
+        if (pattern.isEmpty()) {
+            return string.isEmpty();
+        } else {
+            if (".*".equals(pattern)) {
                 return true;
-            } else return pattern.length() == 1 && MATCH_ZERO_OR_MORE_PRECEDING == pattern.charAt(0);
+            }
+            if (string.isEmpty()) {
+                return pattern.length() == 1
+                        && MATCH_ZERO_OR_MORE_PRECEDING == pattern.charAt(0);
+            }
         }
-        if (".*".equals(pattern)) {
-            return true;
-        }
+
         return validateMatchesPattern(string, pattern);
     }
 
