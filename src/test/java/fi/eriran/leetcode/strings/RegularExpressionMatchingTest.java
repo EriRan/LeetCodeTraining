@@ -70,4 +70,9 @@ class RegularExpressionMatchingTest {
     void matchAnyOrMoreWithOneMoreAfter() {
         assertTrue(new RegularExpressionMatching().isMatch("aaa", ".*a"));
     }
+
+    @Test
+    void useZeroMatchInsteadOfAllMatch() {
+        assertTrue(new RegularExpressionMatching().isMatch("aaa", "a*aaa"));
+    }
 }
