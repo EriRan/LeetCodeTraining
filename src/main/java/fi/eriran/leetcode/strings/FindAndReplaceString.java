@@ -47,22 +47,12 @@ public class FindAndReplaceString {
     }
 
     private String performFindAndReplace(String string, int[] indexes, String[] sources, String[] targets) {
-        //Combined solution of
-        //replaced indexes, would be better to do this as remaining indexes
-        //Replace commands
-        //Replace commands are: start and end indexes of the original
-        //These need to be sorted according to the starting index
         Set<ReplaceCommand> replaceCommands = new TreeSet<>();
         for (int currentIndex = 0; currentIndex < indexes.length; currentIndex++) {
             int replaceStartPoint = indexes[currentIndex];
             String currentSource = sources[currentIndex];
             String currentTarget = targets[currentIndex];
-            //Try to find an occurrance
-            //Try to find next occurrance
-            //Loop until no occurrance is found
-            //Replaced indexes are ignored
 
-            //Try to find source
             int indexOf = string.indexOf(currentSource, replaceStartPoint);
             if (indexOf == replaceStartPoint) {
                 replaceCommands.add(
