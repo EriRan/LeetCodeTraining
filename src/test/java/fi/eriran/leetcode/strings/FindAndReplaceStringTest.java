@@ -34,16 +34,17 @@ class FindAndReplaceStringTest {
         );
     }
 
+    //My output was: "jjievdteb"
     @Test
-    void twoReplacesOneCommand() {
+    void submissionTest1() {
         assertEquals(
-                "xxcoolxx",
+                "jjievdtjfb",
                 new FindAndReplaceString()
                         .findReplaceString(
-                                "acoola",
-                                new int[]{0},
-                                new String[]{"a"},
-                                new String[]{"xx"}
+                                "jjievdtjfb",
+                                new int[]{4,6,1},
+                                new String[]{"md","tjgb","jf"},
+                                new String[]{"foe","oov","e"}
                         )
         );
     }

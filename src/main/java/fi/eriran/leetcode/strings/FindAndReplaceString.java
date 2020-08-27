@@ -64,19 +64,14 @@ public class FindAndReplaceString {
 
             //Try to find source
             int indexOf = string.indexOf(currentSource, replaceStartPoint);
-            while (indexOf != -1) {
+            if (indexOf == replaceStartPoint) {
                 replaceCommands.add(
                         new ReplaceCommand(
-                                indexOf,
-                                indexOf + currentSource.length(),
+                                replaceStartPoint,
+                                replaceStartPoint + currentSource.length(),
                                 currentTarget
                         )
                 );
-                //Search next occurrence from the start of the last unless its impossible
-                if (indexOf + currentSource.length() > string.length()) {
-                    break;
-                }
-                indexOf = string.indexOf(currentSource, indexOf + currentSource.length());
             }
         }
         return buildStringFromOriginalAndReplaceCommands(string, replaceCommands);
