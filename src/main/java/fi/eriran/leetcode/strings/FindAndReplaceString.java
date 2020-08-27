@@ -55,7 +55,6 @@ public class FindAndReplaceString {
         Collection<ReplaceCommand> replaceCommands = new TreeSet<>();
         for (int currentIndex = 0; currentIndex < indexes.length; currentIndex++) {
             int replaceStartPoint = indexes[currentIndex];
-            String substring = string.substring(replaceStartPoint);
             String currentSource = sources[currentIndex];
             String currentTarget = targets[currentIndex];
             //Try to find an occurrance
@@ -64,22 +63,20 @@ public class FindAndReplaceString {
             //Replaced indexes are ignored
 
             //Try to find source
-            int indexOf = substring.indexOf(currentSource);
+            int indexOf = string.indexOf(currentSource, replaceStartPoint);
             while (indexOf != -1) {
-                int startIndex = indexOf + replaceStartPoint;
                 replaceCommands.add(
                         new ReplaceCommand(
-                                startIndex,
-                                startIndex + currentSource.length(),
+                                indexOf,
+                                indexOf + currentSource.length(),
                                 currentTarget
                         )
                 );
                 //Search next occurrence from the start of the last unless its impossible
-                if (startIndex + currentSource.length() > substring.length()) {
+                if (indexOf + currentSource.length() > string.length()) {
                     break;
                 }
-                substring = substring.substring(startIndex + currentSource.length());
-                indexOf = substring.indexOf(currentSource);
+                indexOf = string.indexOf(currentSource, indexOf + currentSource.length());
             }
         }
         return buildStringFromOriginalAndReplaceCommands(string, replaceCommands);

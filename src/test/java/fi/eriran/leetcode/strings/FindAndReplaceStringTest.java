@@ -33,4 +33,18 @@ class FindAndReplaceStringTest {
                         )
         );
     }
+
+    @Test
+    void twoReplacesOneCommand() {
+        assertEquals(
+                "xxcoolxx",
+                new FindAndReplaceString()
+                        .findReplaceString(
+                                "acoola",
+                                new int[]{0},
+                                new String[]{"a"},
+                                new String[]{"xx"}
+                        )
+        );
+    }
 }
