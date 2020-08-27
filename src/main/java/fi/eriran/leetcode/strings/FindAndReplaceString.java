@@ -52,7 +52,7 @@ public class FindAndReplaceString {
         //Replace commands
         //Replace commands are: start and end indexes of the original
         //These need to be sorted according to the starting index
-        Collection<ReplaceCommand> replaceCommands = new TreeSet<>();
+        Set<ReplaceCommand> replaceCommands = new TreeSet<>();
         for (int currentIndex = 0; currentIndex < indexes.length; currentIndex++) {
             int replaceStartPoint = indexes[currentIndex];
             String currentSource = sources[currentIndex];
@@ -83,7 +83,7 @@ public class FindAndReplaceString {
     }
 
     private String buildStringFromOriginalAndReplaceCommands(String string,
-                                                             Collection<ReplaceCommand> replaceCommands) {
+                                                             Set<ReplaceCommand> replaceCommands) {
         if (replaceCommands.isEmpty()) {
             return string;
         }
