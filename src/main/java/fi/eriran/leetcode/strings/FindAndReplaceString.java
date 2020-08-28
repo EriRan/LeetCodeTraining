@@ -47,43 +47,72 @@ public class FindAndReplaceString {
     }
 
     private String performFindAndReplace(String string, int[] indexes, String[] sources, String[] targets) {
-        Map<Integer, Integer> endpointsAndIndexesToUse = new TreeMap<>();
+        Set<ReplaceCommand> replaceCommands = new TreeSet<>();
         for (int currentIndex = 0; currentIndex < indexes.length; currentIndex++) {
             int replaceStartPoint = indexes[currentIndex];
             String currentSource = sources[currentIndex];
             int indexOf = string.indexOf(currentSource, replaceStartPoint);
             if (indexOf == replaceStartPoint) {
-                endpointsAndIndexesToUse.put(replaceStartPoint + currentSource.length(), currentIndex);
+                replaceCommands.add(new ReplaceCommand(currentIndex, replaceStartPoint + currentSource.length()));
             }
         }
         return buildStringFromOriginalAndReplaceCommands(
                 string,
                 indexes,
                 targets,
-                endpointsAndIndexesToUse);
+                replaceCommands);
     }
 
     private String buildStringFromOriginalAndReplaceCommands(String string,
                                                              int[] indexes,
                                                              String[] targets,
-                                                             Map<Integer, Integer> endpointsAndIndexesToUse) {
+                                                             Set<ReplaceCommand> endpointsAndIndexesToUse) {
         if (endpointsAndIndexesToUse.isEmpty()) {
             return string;
         }
         StringBuilder stringBuilder = new StringBuilder();
         int currentOriginalStringIndex = 0;
-        for (Map.Entry<Integer, Integer> endPointAndIndex : endpointsAndIndexesToUse.entrySet()) {
-            int startIndex = indexes[endPointAndIndex.getValue()];
+        for (ReplaceCommand replaceCommand : endpointsAndIndexesToUse) {
+            int startIndex = indexes[replaceCommand.indexUsed];
             if (currentOriginalStringIndex < startIndex) {
                 stringBuilder.append(string, currentOriginalStringIndex, startIndex);
             }
-            stringBuilder.append(targets[endPointAndIndex.getValue()]);
-            currentOriginalStringIndex = endPointAndIndex.getKey();
+            stringBuilder.append(targets[replaceCommand.indexUsed]);
+            currentOriginalStringIndex = replaceCommand.endIndex;
         }
         //Append the rest from the original string that was not replaced
         if (currentOriginalStringIndex < string.length()) {
             stringBuilder.append(string.substring(currentOriginalStringIndex));
         }
         return stringBuilder.toString();
+    }
+
+    static class ReplaceCommand implements Comparable<ReplaceCommand> {
+        int indexUsed;
+        int endIndex;
+
+        public ReplaceCommand(int indexUsed, int endIndex) {
+            this.indexUsed = indexUsed;
+            this.endIndex = endIndex;
+        }
+
+        @Override
+        public int compareTo(ReplaceCommand o) {
+            return Integer.compare(this.endIndex, o.endIndex);
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            ReplaceCommand that = (ReplaceCommand) o;
+            return indexUsed == that.indexUsed &&
+                    endIndex == that.endIndex;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(indexUsed, endIndex);
+        }
     }
 }
