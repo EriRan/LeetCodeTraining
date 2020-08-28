@@ -49,6 +49,20 @@ class FindAndReplaceStringTest {
     }
 
     @Test
+    void submissionTest2() {
+        assertEquals(
+                "vbfrssozp",
+                new FindAndReplaceString()
+                        .findReplaceString(
+                                "vmokgggqzp",
+                                new int[]{3,5,1},
+                                new String[]{"kg","ggq","mo"},
+                                new String[]{"s","so","bfr"}
+                        )
+        );
+    }
+
+    @Test
     void differentArraySizes() {
         FindAndReplaceString algorithm = new FindAndReplaceString();
         assertThrows(IllegalArgumentException.class,
