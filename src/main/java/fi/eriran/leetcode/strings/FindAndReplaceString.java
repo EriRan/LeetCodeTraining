@@ -47,39 +47,38 @@ public class FindAndReplaceString {
     }
 
     private String performFindAndReplace(String string, int[] indexes, String[] sources, String[] targets) {
-        Set<ReplaceCommand> replaceCommands = new TreeSet<>();
+        Map<Integer, Integer> endpointsAndIndexesToUse = new TreeMap<>();
         for (int currentIndex = 0; currentIndex < indexes.length; currentIndex++) {
             int replaceStartPoint = indexes[currentIndex];
             String currentSource = sources[currentIndex];
-            String currentTarget = targets[currentIndex];
-
             int indexOf = string.indexOf(currentSource, replaceStartPoint);
             if (indexOf == replaceStartPoint) {
-                replaceCommands.add(
-                        new ReplaceCommand(
-                                replaceStartPoint,
-                                replaceStartPoint + currentSource.length(),
-                                currentTarget
-                        )
-                );
+                endpointsAndIndexesToUse.put(replaceStartPoint + currentSource.length(), currentIndex);
             }
         }
-        return buildStringFromOriginalAndReplaceCommands(string, replaceCommands);
+        return buildStringFromOriginalAndReplaceCommands(
+                string,
+                indexes,
+                targets,
+                endpointsAndIndexesToUse);
     }
 
     private String buildStringFromOriginalAndReplaceCommands(String string,
-                                                             Set<ReplaceCommand> replaceCommands) {
-        if (replaceCommands.isEmpty()) {
+                                                             int[] indexes,
+                                                             String[] targets,
+                                                             Map<Integer, Integer> endpointsAndIndexesToUse) {
+        if (endpointsAndIndexesToUse.isEmpty()) {
             return string;
         }
         StringBuilder stringBuilder = new StringBuilder();
         int currentOriginalStringIndex = 0;
-        for (ReplaceCommand replaceCommand : replaceCommands) {
-            if (currentOriginalStringIndex < replaceCommand.startIndex) {
-                stringBuilder.append(string, currentOriginalStringIndex, replaceCommand.startIndex);
+        for (Map.Entry<Integer, Integer> endPointAndIndex : endpointsAndIndexesToUse.entrySet()) {
+            int startIndex = indexes[endPointAndIndex.getValue()];
+            if (currentOriginalStringIndex < startIndex) {
+                stringBuilder.append(string, currentOriginalStringIndex, startIndex);
             }
-            stringBuilder.append(replaceCommand.string);
-            currentOriginalStringIndex = replaceCommand.endIndex;
+            stringBuilder.append(targets[endPointAndIndex.getValue()]);
+            currentOriginalStringIndex = endPointAndIndex.getKey();
         }
         //Append the rest from the original string that was not replaced
         if (currentOriginalStringIndex < string.length()) {
@@ -87,43 +86,4 @@ public class FindAndReplaceString {
         }
         return stringBuilder.toString();
     }
-
-    static class ReplaceCommand implements Comparable<ReplaceCommand> {
-        //inclusive
-        int startIndex;
-        //exclusive
-        int endIndex;
-        String string;
-
-        public ReplaceCommand(int startIndex, int endIndex, String string) {
-            this.startIndex = startIndex;
-            this.endIndex = endIndex;
-            this.string = string;
-        }
-
-        @Override
-        public int compareTo(ReplaceCommand o) {
-            return Integer.compare(this.startIndex, o.startIndex);
-        }
-
-        //It is stated in the problem description that we will not run into overlapping replaces
-        //This means that we will not run into sitations where we have two of the same startIndexes
-        //Treeset uses compareTo to deduce whether objects are equal so we will never run into situation
-        //where we can not lose a replace command because they have the same startIndex but different endIndex
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            ReplaceCommand that = (ReplaceCommand) o;
-            return startIndex == that.startIndex &&
-                    endIndex == that.endIndex &&
-                    Objects.equals(string, that.string);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(startIndex, endIndex, string);
-        }
-    }
-
 }
