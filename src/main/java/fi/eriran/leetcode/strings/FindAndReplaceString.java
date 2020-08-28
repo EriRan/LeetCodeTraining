@@ -32,7 +32,7 @@ public class FindAndReplaceString {
             throw new IllegalArgumentException("Parameters may not be null");
         }
         if (indexes.length != sources.length
-                && sources.length != targets.length) {
+                || sources.length != targets.length) {
             throw new IllegalArgumentException("Arrays must be same size");
         }
         if (string.length() > 1000) {
@@ -41,7 +41,7 @@ public class FindAndReplaceString {
         for (int index : indexes) {
             if (index >= string.length()
                     || index < 0) {
-                throw new IllegalArgumentException("Invalid index value");
+                throw new IllegalArgumentException("Invalid index value: " + index);
             }
         }
     }
