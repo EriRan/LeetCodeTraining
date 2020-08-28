@@ -34,7 +34,6 @@ class FindAndReplaceStringTest {
         );
     }
 
-    //My output was: "jjievdteb"
     @Test
     void submissionTest1() {
         assertEquals(
@@ -42,9 +41,52 @@ class FindAndReplaceStringTest {
                 new FindAndReplaceString()
                         .findReplaceString(
                                 "jjievdtjfb",
-                                new int[]{4,6,1},
-                                new String[]{"md","tjgb","jf"},
-                                new String[]{"foe","oov","e"}
+                                new int[]{4, 6, 1},
+                                new String[]{"md", "tjgb", "jf"},
+                                new String[]{"foe", "oov", "e"}
+                        )
+        );
+    }
+
+    @Test
+    void differentArraySizes() {
+        FindAndReplaceString algorithm = new FindAndReplaceString();
+        assertThrows(IllegalArgumentException.class,
+                () -> algorithm
+                        .findReplaceString(
+                                "irrelevant",
+                                new int[]{1},
+                                new String[]{"md", "xd", "bp"},
+                                new String[]{"foe", "oov", "e"}
+                        ));
+        assertThrows(IllegalArgumentException.class,
+                () -> algorithm
+                        .findReplaceString(
+                                "irrelevant",
+                                new int[]{1, 2, 3},
+                                new String[]{"md"},
+                                new String[]{"foe", "oov", "e"}
+                        ));
+        assertThrows(IllegalArgumentException.class,
+                () -> algorithm
+                        .findReplaceString(
+                                "irrelevant",
+                                new int[]{1, 2, 3},
+                                new String[]{"md", "xd", "bp"},
+                                new String[]{"foe"}
+                        ));
+    }
+
+    @Test
+    void invalidIndexValue() {
+        FindAndReplaceString algorithm = new FindAndReplaceString();
+        assertThrows(IllegalArgumentException.class,
+                () -> algorithm
+                        .findReplaceString(
+                                "jjievdtjfb",
+                                new int[]{4, 6, -1},
+                                new String[]{"md", "tjgb", "jf"},
+                                new String[]{"foe", "oov", "e"}
                         )
         );
     }
