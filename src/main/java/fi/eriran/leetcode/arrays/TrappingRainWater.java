@@ -1,5 +1,7 @@
 package fi.eriran.leetcode.arrays;
 
+import java.util.Deque;
+
 /**
  * Given n non-negative integers representing an elevation map where the width of each bar is 1, compute how much
  * water it is able to trap after raining.
@@ -22,9 +24,41 @@ public class TrappingRainWater {
 
     private int findTrapCount(int[] height) {
         int rainWaterCount = 0;
+        int potentialRainWater = 0;
+
+        for (int i = findFirstNonZero(height); i < height.length; i++) {
+            int currentHeight = height[i];
+            //Find "the next side of the pond"
+            for (int j = i + 1; j < height.length; j++) {
+                int pondHeigth = height[j];
+                if (pondHeigth < currentHeight) {
+                    potentialRainWater += currentHeight - pondHeigth;
+                } else {
+                    rainWaterCount += potentialRainWater;
+                    i = j - 1;
+                    break;
+                }
+            }
+            potentialRainWater = 0;
+        }
 
         //Some kind of two pointer solution?
         return rainWaterCount;
+    }
+
+    private int findFirstNonZero(int[] height) {
+        for (int i = 0; i < height.length; i++) {
+            if (height[i] != 0) {
+                return i;
+            }
+        }
+        return height.length;
+    }
+
+    private void addToCurrentLimitingHeight(int currentHeight, Deque<Integer> heightStack) {
+        if (currentHeight != 0) {
+            heightStack.push(currentHeight);
+        }
     }
 
 }
