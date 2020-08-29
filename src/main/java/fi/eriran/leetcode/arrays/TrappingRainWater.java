@@ -1,7 +1,5 @@
 package fi.eriran.leetcode.arrays;
 
-import java.util.Deque;
-
 /**
  * Given n non-negative integers representing an elevation map where the width of each bar is 1, compute how much
  * water it is able to trap after raining.
@@ -53,12 +51,6 @@ public class TrappingRainWater {
             }
         }
         return height.length;
-    }
-
-    private void addToCurrentLimitingHeight(int currentHeight, Deque<Integer> heightStack) {
-        if (currentHeight != 0) {
-            heightStack.push(currentHeight);
-        }
     }
 
 }
