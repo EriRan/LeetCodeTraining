@@ -20,31 +20,31 @@ public class SwapNodesInPairs {
 
     private ListNode performSwapping(ListNode head) {
         ListNode currentNode = head;
-        ListNode nextNode = currentNode.next;
-        ListNode previousSetLast = null;
-        head = nextNode;
-        while (nextNode != null) {
+        ListNode previousNode = null;
+        head = currentNode.next;
+        while (currentNode != null && currentNode.next != null) {
             //Current node is made to point the next of the next
             //Next node is made to point the current node
             //Previous set last is made to point the next node
-            ListNode nextOfPreviousNext = nextNode.next;
+            ListNode nextNode = currentNode.next;
+            ListNode nextOfNext = getNextOfNext(currentNode);
             nextNode.next = currentNode;
-            currentNode.next = nextOfPreviousNext;
+            currentNode.next = nextOfNext;
 
-            if (previousSetLast != null) {
-                previousSetLast.next = nextNode;
-                previousSetLast = currentNode;
-            } else {
-                previousSetLast = currentNode;
+            if (previousNode != null) {
+                previousNode.next = nextNode;
             }
-
-            currentNode = nextOfPreviousNext;
-            if (nextOfPreviousNext != null) {
-                nextNode = nextOfPreviousNext.next;
-            } else {
-                return head;
-            }
+            previousNode = currentNode;
+            currentNode = nextOfNext;
         }
         return head;
+    }
+
+    private ListNode getNextOfNext(ListNode currentNode) {
+        //While condition has currentNode.next != null so we can directly get next of the next
+        if (currentNode.next.next != null) {
+            return currentNode.next.next;
+        }
+        return null;
     }
 }
