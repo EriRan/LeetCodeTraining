@@ -8,8 +8,10 @@ package fi.eriran.leetcode.linkedlist;
 public class SwapNodesInPairs {
 
     public ListNode swapPairs(ListNode head) {
-        validateInput(head);
         //Shortcuts
+        if (head == null) {
+            return null;
+        }
         if (head.next == null) {
             return head;
         }
@@ -44,11 +46,5 @@ public class SwapNodesInPairs {
             }
         }
         return head;
-    }
-
-    private void validateInput(ListNode head) {
-        if (head == null) {
-            throw new IllegalArgumentException("Null input not allowed");
-        }
     }
 }
