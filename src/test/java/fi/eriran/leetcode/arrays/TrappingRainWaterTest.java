@@ -20,4 +20,9 @@ class TrappingRainWaterTest {
     void submissionTest2() {
         assertEquals(23, new TrappingRainWater().trap(new int[]{5,5,1,7,1,1,5,2,7,6}));
     }
+
+    @Test
+    void submissionTest3() {
+        assertEquals(2, new TrappingRainWater().trap(new int[]{2,0,2}));
+    }
 }
