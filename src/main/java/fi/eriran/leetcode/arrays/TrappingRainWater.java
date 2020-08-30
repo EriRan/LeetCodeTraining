@@ -28,7 +28,7 @@ public class TrappingRainWater {
         int leftFoundMax = 0;
         int rightFoundMax = 0;
 
-        while (leftPointer < rightPointer) {
+        while (leftPointer <= rightPointer) {
             int leftHeight = height[leftPointer];
             int rightHeight = height[rightPointer];
 
@@ -40,14 +40,14 @@ public class TrappingRainWater {
             rainWaterCount += getWaterAmount(leftHeight, smallerMax);
             rainWaterCount += getWaterAmount(rightHeight, smallerMax);
 
-            leftPointer++;
-            rightPointer--;
-        }
-        if (leftPointer == rightPointer) {
-            int leftHeight = height[leftPointer];
-            leftFoundMax = tryToChangeMax(leftFoundMax, leftHeight);
-            int smallerMax = Math.min(leftFoundMax, rightFoundMax);
-            rainWaterCount += getWaterAmount(leftHeight, smallerMax);
+            if (leftFoundMax > rightFoundMax) {
+                rightPointer--;
+            } else if (rightFoundMax > leftFoundMax) {
+                leftPointer++;
+            } else {
+                leftPointer++;
+                rightPointer--;
+            }
         }
 
         //Some kind of two pointer solution?
