@@ -21,55 +21,19 @@ public class TrappingRainWater {
     }
 
     private int findTrapCount(int[] height) {
-        int rainWaterCount = 0;
+        WaterStateHolder stateHolder = new WaterStateHolder(height);
 
-        int leftPointer = findFirstNonZeroFromLeft(height);
-        int rightPointer = findFirstNonZeroFromRight(height);
-        int leftFoundMax = 0;
-        int rightFoundMax = 0;
-
-        int leftHeight;
-        int rightHeight;
-        int smallerMax;
-
-        while (leftPointer < rightPointer) {
-            switch (Integer.compare(leftFoundMax, rightFoundMax)) {
+        while (stateHolder.leftPointer < stateHolder.rightPointer) {
+            switch (Integer.compare(stateHolder.leftMaxHeight, stateHolder.rightMaxHeight)) {
                 case 1:
-                    rightHeight = height[rightPointer];
-
-                    rightFoundMax = tryToChangeMax(rightFoundMax, rightHeight);
-
-                    smallerMax = Math.min(leftFoundMax, rightFoundMax);
-
-                    rainWaterCount += getWaterAmount(rightHeight, smallerMax);
-
-                    rightPointer--;
+                    moveRight(height, stateHolder);
                     break;
                 case 0:
-                    leftHeight = height[leftPointer];
-                    rightHeight = height[rightPointer];
-
-                    leftFoundMax = tryToChangeMax(leftFoundMax, leftHeight);
-                    rightFoundMax = tryToChangeMax(rightFoundMax, rightHeight);
-
-                    smallerMax = Math.min(leftFoundMax, rightFoundMax);
-
-                    rainWaterCount += getWaterAmount(leftHeight, smallerMax);
-                    rainWaterCount += getWaterAmount(rightHeight, smallerMax);
-
-                    leftPointer++;
-                    rightPointer--;
+                    moveRight(height, stateHolder);
+                    moveLeft(height, stateHolder);
                     break;
                 case -1:
-                    leftHeight = height[leftPointer];
-
-                    leftFoundMax = tryToChangeMax(leftFoundMax, leftHeight);
-
-                    smallerMax = Math.min(leftFoundMax, rightFoundMax);
-
-                    rainWaterCount += getWaterAmount(leftHeight, smallerMax);
-
-                    leftPointer++;
+                    moveLeft(height, stateHolder);
                     break;
                 default:
                     throw new IllegalStateException("Switch encountered unknown value");
@@ -77,42 +41,85 @@ public class TrappingRainWater {
             }
         }
         //Handle the last iteration when left and right pointers are equal
-        if (leftPointer == rightPointer) {
-            leftHeight = height[leftPointer];
-            leftFoundMax = tryToChangeMax(leftFoundMax, leftHeight);
-            rainWaterCount += getWaterAmount(leftHeight, Math.min(leftFoundMax, rightFoundMax));
+        if (stateHolder.leftPointer == stateHolder.rightPointer) {
+            moveLeft(height, stateHolder);
         }
 
-        return rainWaterCount;
+        return stateHolder.waterAmount;
+    }
+
+    private void moveLeft(int[] height, WaterStateHolder stateHolder) {
+        int smallerMax;
+        int leftHeight;
+        leftHeight = height[stateHolder.leftPointer];
+
+        stateHolder.leftMaxHeight = tryToChangeMax(stateHolder.leftMaxHeight, leftHeight);
+
+        smallerMax = Math.min(stateHolder.leftMaxHeight, stateHolder.rightMaxHeight);
+
+        stateHolder.waterAmount += getWaterAmount(leftHeight, smallerMax);
+
+        stateHolder.leftPointer++;
+    }
+
+    private void moveRight(int[] height, WaterStateHolder stateHolder) {
+        int smallerMax;
+        int rightHeight;
+        rightHeight = height[stateHolder.rightPointer];
+
+        stateHolder.rightMaxHeight = tryToChangeMax(stateHolder.rightMaxHeight, rightHeight);
+
+        smallerMax = Math.min(stateHolder.leftMaxHeight, stateHolder.rightMaxHeight);
+
+        stateHolder.waterAmount += getWaterAmount(rightHeight, smallerMax);
+
+        stateHolder.rightPointer--;
     }
 
     private int getWaterAmount(int height, int maximumPossible) {
         return Math.max(maximumPossible - height, 0);
     }
 
-    private int tryToChangeMax(int leftFoundMax, int leftHeight) {
-        if (leftFoundMax < leftHeight) {
-            leftFoundMax = leftHeight;
+    private int tryToChangeMax(int currentMaxHeight, int leftHeight) {
+        if (currentMaxHeight < leftHeight) {
+            currentMaxHeight = leftHeight;
         }
-        return leftFoundMax;
+        return currentMaxHeight;
     }
 
-    private int findFirstNonZeroFromRight(int[] height) {
-        for (int i = height.length - 1; i > 0; i--) {
-            if (height[i] != 0) {
-                return i;
-            }
-        }
-        return height.length;
-    }
+    static class WaterStateHolder {
+        int waterAmount;
+        int leftPointer;
+        int rightPointer;
+        int leftMaxHeight;
+        int rightMaxHeight;
 
-    private int findFirstNonZeroFromLeft(int[] height) {
-        for (int i = 0; i < height.length; i++) {
-            if (height[i] != 0) {
-                return i;
-            }
+        public WaterStateHolder(int[] height) {
+            waterAmount = 0;
+            leftPointer = findFirstNonZeroFromLeft(height);
+            rightPointer = findFirstNonZeroFromRight(height);
+            leftMaxHeight = 0;
+            rightMaxHeight = 0;
+
         }
-        return height.length;
+
+        private int findFirstNonZeroFromLeft(int[] height) {
+            for (int i = 0; i < height.length; i++) {
+                if (height[i] != 0) {
+                    return i;
+                }
+            }
+            return height.length;
+        }
+
+        private int findFirstNonZeroFromRight(int[] height) {
+            for (int i = height.length - 1; i > 0; i--) {
+                if (height[i] != 0) {
+                    return i;
+                }
+            }
+            return height.length;
+        }
     }
 
 }
