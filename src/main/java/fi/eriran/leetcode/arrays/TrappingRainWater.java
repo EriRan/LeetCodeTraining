@@ -28,33 +28,39 @@ public class TrappingRainWater {
         int leftFoundMax = 0;
         int rightFoundMax = 0;
 
-        while (leftPointer <= rightPointer) {
-            if (leftPointer == rightPointer) {
+        while (leftPointer < rightPointer) {
+            if (leftFoundMax > rightFoundMax) {
+                int rightHeight = height[rightPointer];
+                rightFoundMax = tryToChangeMax(rightFoundMax, rightHeight);
+                int smallerMax = Math.min(leftFoundMax, rightFoundMax);
+                rainWaterCount += getWaterAmount(rightHeight, smallerMax);
+                rightPointer--;
+            } else if (rightFoundMax > leftFoundMax) {
                 int leftHeight = height[leftPointer];
                 leftFoundMax = tryToChangeMax(leftFoundMax, leftHeight);
                 int smallerMax = Math.min(leftFoundMax, rightFoundMax);
                 rainWaterCount += getWaterAmount(leftHeight, smallerMax);
-                break;
-            }
-            int leftHeight = height[leftPointer];
-            int rightHeight = height[rightPointer];
-
-            leftFoundMax = tryToChangeMax(leftFoundMax, leftHeight);
-            rightFoundMax = tryToChangeMax(rightFoundMax, rightHeight);
-
-            int smallerMax = Math.min(leftFoundMax, rightFoundMax);
-
-            rainWaterCount += getWaterAmount(leftHeight, smallerMax);
-            rainWaterCount += getWaterAmount(rightHeight, smallerMax);
-
-            if (leftFoundMax > rightFoundMax) {
-                rightPointer--;
-            } else if (rightFoundMax > leftFoundMax) {
                 leftPointer++;
             } else {
+                int leftHeight = height[leftPointer];
+                int rightHeight = height[rightPointer];
+
+                leftFoundMax = tryToChangeMax(leftFoundMax, leftHeight);
+                rightFoundMax = tryToChangeMax(rightFoundMax, rightHeight);
+
+                int smallerMax = Math.min(leftFoundMax, rightFoundMax);
+
+                rainWaterCount += getWaterAmount(leftHeight, smallerMax);
+                rainWaterCount += getWaterAmount(rightHeight, smallerMax);
                 leftPointer++;
                 rightPointer--;
             }
+        }
+        if (leftPointer == rightPointer) {
+            int leftHeight = height[leftPointer];
+            leftFoundMax = tryToChangeMax(leftFoundMax, leftHeight);
+            int smallerMax = Math.min(leftFoundMax, rightFoundMax);
+            rainWaterCount += getWaterAmount(leftHeight, smallerMax);
         }
 
         //Some kind of two pointer solution?
