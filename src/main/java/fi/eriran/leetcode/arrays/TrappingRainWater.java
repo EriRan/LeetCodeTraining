@@ -29,6 +29,13 @@ public class TrappingRainWater {
         int rightFoundMax = 0;
 
         while (leftPointer <= rightPointer) {
+            if (leftPointer == rightPointer) {
+                int leftHeight = height[leftPointer];
+                leftFoundMax = tryToChangeMax(leftFoundMax, leftHeight);
+                int smallerMax = Math.min(leftFoundMax, rightFoundMax);
+                rainWaterCount += getWaterAmount(leftHeight, smallerMax);
+                break;
+            }
             int leftHeight = height[leftPointer];
             int rightHeight = height[rightPointer];
 
