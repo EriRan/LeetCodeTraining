@@ -1,8 +1,5 @@
 package fi.eriran.leetcode.matrix;
 
-import java.util.HashSet;
-import java.util.Set;
-
 public class ValidSudoku {
 
     private static final char EMPTY = '.';
@@ -21,11 +18,16 @@ public class ValidSudoku {
 
     private boolean isValidRowByRow(char[][] board) {
         for (char[] row : board) {
-            Set<Character> foundNumbers = new HashSet<>();
+            Integer[] foundNumbers = new Integer[board.length];
             for (int x = 0; x < board.length; x++) {
                 char currentChar = row[x];
-                if (currentChar != EMPTY && !foundNumbers.add(currentChar)) {
-                    return false;
+                if (currentChar != EMPTY) {
+                    int newNumberValue = Character.getNumericValue(currentChar) - 1;
+                    Integer foundNumber = foundNumbers[newNumberValue];
+                    if (foundNumber != null && foundNumber == newNumberValue) {
+                        return false;
+                    }
+                    foundNumbers[newNumberValue] = newNumberValue;
                 }
             }
         }
@@ -34,11 +36,16 @@ public class ValidSudoku {
 
     private boolean isValidColumnByColumn(char[][] board) {
         for (int x = 0; x < board.length; x++) {
-            Set<Character> foundNumbers = new HashSet<>();
+            Integer[] foundNumbers = new Integer[board.length];
             for (char[] column : board) {
                 char currentChar = column[x];
-                if (currentChar != EMPTY && !foundNumbers.add(currentChar)) {
-                    return false;
+                if (currentChar != EMPTY) {
+                    int newNumberValue = Character.getNumericValue(currentChar) - 1;
+                    Integer foundNumber = foundNumbers[newNumberValue];
+                    if (foundNumber != null && foundNumber == newNumberValue) {
+                        return false;
+                    }
+                    foundNumbers[newNumberValue] = newNumberValue;
                 }
             }
         }
@@ -57,12 +64,17 @@ public class ValidSudoku {
     }
 
     private boolean isSquareValid(char[][] board, int xIncrement, int yIncrement) {
-        Set<Character> foundNumbers = new HashSet<>();
+        Integer[] foundNumbers = new Integer[board.length];
         for (int x = 0; x < squareSize; x++) {
             for (int y = 0; y < squareSize; y++) {
                 char currentChar = board[x + xIncrement][y + yIncrement];
-                if (currentChar != EMPTY && !foundNumbers.add(currentChar)) {
-                    return false;
+                if (currentChar != EMPTY) {
+                    int newNumberValue = Character.getNumericValue(currentChar) - 1;
+                    Integer foundNumber = foundNumbers[newNumberValue];
+                    if (foundNumber != null && foundNumber == newNumberValue) {
+                        return false;
+                    }
+                    foundNumbers[newNumberValue] = newNumberValue;
                 }
             }
         }
