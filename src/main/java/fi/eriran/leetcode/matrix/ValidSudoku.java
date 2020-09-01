@@ -6,8 +6,13 @@ import java.util.Set;
 public class ValidSudoku {
 
     private static final char EMPTY = '.';
+    private int squareSize;
 
     public boolean isValidSudoku(char[][] board) {
+        if (board == null) {
+            return false;
+        }
+        squareSize = board.length / 3;
         //Brute force: validate row by row, column by column, square by square
         return isValidRowByRow(board)
                 && isValidColumnByColumn(board)
@@ -41,7 +46,26 @@ public class ValidSudoku {
     }
 
     private boolean isValidBySquares(char[][] board) {
-        //todo: implement
-        return false;
+        for (int xIncrement = 0; xIncrement < board.length; xIncrement += squareSize) {
+            for (int yIncrement = 0; yIncrement < board.length; yIncrement += squareSize) {
+                if (!isSquareValid(board, xIncrement, yIncrement)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private boolean isSquareValid(char[][] board, int xIncrement, int yIncrement) {
+        Set<Character> foundNumbers = new HashSet<>();
+        for (int x = 0; x < squareSize; x++) {
+            for (int y = 0; y < squareSize; y++) {
+                char currentChar = board[x + xIncrement][y + yIncrement];
+                if (currentChar != EMPTY && !foundNumbers.add(currentChar)) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }
