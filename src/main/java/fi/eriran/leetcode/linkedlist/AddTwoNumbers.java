@@ -8,50 +8,62 @@ package fi.eriran.leetcode.linkedlist;
 public class AddTwoNumbers {
 
     public ListNode addTwoNumbers(ListNode listNodeOne, ListNode listNodeTwo) {
-        ListNode addedTwoNumbersHead = new ListNode();
-        ListNode addedTwoNumbers = addedTwoNumbersHead;
-        boolean overflow = false;
-        while (listNodeOne != null || listNodeTwo != null) {
-            Integer listNodeOneValue = getListNodeValue(listNodeOne);
-            Integer listNodeTwoValue = getListNodeValue(listNodeTwo);
-            //Add the two values together
-            int combinedValue;
-            if (overflow) {
-                combinedValue = getCombinedValue(listNodeOneValue, listNodeTwoValue) + 1;
-                overflow = false;
-            } else {
-                combinedValue = getCombinedValue(listNodeOneValue, listNodeTwoValue);
-            }
-
-            //Add combined value to the current node
-            if (combinedValue > 9) {
-                addedTwoNumbers.val = combinedValue - 10;
-                overflow = true;
-            } else {
-                addedTwoNumbers.val = combinedValue;
-            }
-
-            //Move pointers
-            boolean doContinue = false;
-            if (listNodeOne != null) {
-                listNodeOne = listNodeOne.next;
-                doContinue = listNodeOne != null;
-            }
-            if (listNodeTwo != null) {
-                listNodeTwo = listNodeTwo.next;
-                doContinue = doContinue || listNodeTwo != null;
-            }
-            if (doContinue) {
-                addedTwoNumbers.next = new ListNode();
-                addedTwoNumbers = addedTwoNumbers.next;
-            } else if (overflow) {
-                addedTwoNumbers.next = new ListNode(1);
-            }
+        if (listNodeOne == null || listNodeTwo == null) {
+            return null;
         }
-        return addedTwoNumbersHead;
+        ListNode listNodeHead = new ListNode();
+        createNextNode(listNodeOne, listNodeTwo, listNodeHead, false);
+        return listNodeHead;
     }
 
-    private int getCombinedValue(Integer listNodeOneValue, Integer listNodeTwoValue) {
+    private void createNextNode(ListNode listNodeOne,
+                                ListNode listNodeTwo,
+                                ListNode currentListNode,
+                                boolean overflow) {
+        //Add the two values together
+        int combinedValue = getCombinedValue(
+                getListNodeValue(listNodeOne),
+                getListNodeValue(listNodeTwo),
+                overflow
+        );
+        overflow = false;
+
+        //Add combined value to the current node
+        if (combinedValue > 9) {
+            currentListNode.val = combinedValue - 10;
+            overflow = true;
+        } else {
+            currentListNode.val = combinedValue;
+        }
+
+        //Move pointers
+        ListNode nextOneNode = getNextOrNull(listNodeOne);
+        ListNode nextTwoNode = getNextOrNull(listNodeTwo);
+        if (nextOneNode == null && nextTwoNode == null) {
+            if (overflow) {
+                currentListNode.next = new ListNode(1);
+            }
+        } else {
+            currentListNode.next = new ListNode();
+            createNextNode(nextOneNode, nextTwoNode, currentListNode.next, overflow);
+        }
+    }
+
+    private ListNode getNextOrNull(ListNode listNodeOne) {
+        if (listNodeOne == null) {
+            return null;
+        }
+        return listNodeOne.next;
+    }
+
+    private int getCombinedValue(Integer listNodeOneValue, Integer listNodeTwoValue, boolean overflow) {
+        if (overflow) {
+            return combineTwoValues(listNodeOneValue, listNodeTwoValue) + 1;
+        }
+        return combineTwoValues(listNodeOneValue, listNodeTwoValue);
+    }
+
+    private int combineTwoValues(Integer listNodeOneValue, Integer listNodeTwoValue) {
         if (listNodeOneValue != null && listNodeTwoValue != null) {
             return listNodeOneValue + listNodeTwoValue;
         } else if (listNodeOneValue != null) {
