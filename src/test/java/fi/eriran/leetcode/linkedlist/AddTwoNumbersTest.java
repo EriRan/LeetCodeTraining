@@ -2,7 +2,7 @@ package fi.eriran.leetcode.linkedlist;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class AddTwoNumbersTest {
 
@@ -15,13 +15,34 @@ class AddTwoNumbersTest {
     @Test
     void example1() {
         assertEquals(807,
-                ListNodeUtil.getAsOneNumber(
+                reverseNumber(ListNodeUtil.getAsOneNumber(
                         new AddTwoNumbers().addTwoNumbers(
                                 testObjectGenerator.create(2, 4, 3),
                                 testObjectGenerator.create(5, 6, 4)
                         )
-                )
+                ))
 
+        );
+    }
+
+    @Test
+    void overflowCausesCreationOfNewListNode() {
+        assertEquals(1110,
+                reverseNumber(ListNodeUtil.getAsOneNumber(
+                        new AddTwoNumbers().addTwoNumbers(
+                                testObjectGenerator.create(9, 9, 9),
+                                testObjectGenerator.create(1, 1, 1)
+                        )
+                ))
+
+        );
+    }
+
+    private int reverseNumber(int numberToReverse) {
+        return Integer.parseInt(
+                new StringBuilder(
+                        String.valueOf(numberToReverse)
+                ).reverse().toString()
         );
     }
 }
