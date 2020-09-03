@@ -14,6 +14,7 @@ public class AddTwoNumbers {
         while (listNodeOne != null || listNodeTwo != null) {
             Integer listNodeOneValue = getListNodeValue(listNodeOne);
             Integer listNodeTwoValue = getListNodeValue(listNodeTwo);
+            //Add the two values together
             int combinedValue;
             if (overflow) {
                 combinedValue = getCombinedValue(listNodeOneValue, listNodeTwoValue) + 1;
@@ -21,6 +22,8 @@ public class AddTwoNumbers {
             } else {
                 combinedValue = getCombinedValue(listNodeOneValue, listNodeTwoValue);
             }
+
+            //Add combined value to the current node
             if (combinedValue > 9) {
                 addedTwoNumbers.val = combinedValue - 10;
                 overflow = true;
@@ -29,9 +32,7 @@ public class AddTwoNumbers {
             }
 
             //Move pointers
-
             boolean doContinue = false;
-
             if (listNodeOne != null) {
                 listNodeOne = listNodeOne.next;
                 doContinue = listNodeOne != null;
