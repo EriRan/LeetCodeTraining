@@ -6,29 +6,24 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class SwapNodesInPairsTest {
 
+    private final ListNodeTestObjectGenerator testObjectGenerator;
+
+    public SwapNodesInPairsTest() {
+        testObjectGenerator = new ListNodeTestObjectGenerator();
+    }
+
     @Test
     void example1() {
         int[] values = {1, 2, 3, 4};
         validateOrder(new int[]{2, 1, 4, 3},
-                new SwapNodesInPairs().swapPairs(createListNodeLinkedList(values)));
+                new SwapNodesInPairs().swapPairs(testObjectGenerator.create(values)));
     }
 
     @Test
     void threeValues() {
         int[] values = {1, 2, 3};
         validateOrder(new int[]{2, 1, 3},
-                new SwapNodesInPairs().swapPairs(createListNodeLinkedList(values)));
-    }
-
-    private ListNode createListNodeLinkedList(int... numbers) {
-        ListNode firstNode = new ListNode(numbers[0]);
-        ListNode previous = firstNode;
-        for (int i = 1; i < numbers.length; i++) {
-            ListNode newNode = new ListNode(numbers[i]);
-            previous.next = newNode;
-            previous = newNode;
-        }
-        return firstNode;
+                new SwapNodesInPairs().swapPairs(testObjectGenerator.create(values)));
     }
 
     private void validateOrder(int[] expectedOrder, ListNode firstNode) {
