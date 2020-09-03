@@ -15,7 +15,7 @@ class AddTwoNumbersTest {
     @Test
     void example1() {
         assertEquals(807,
-                reverseNumber(ListNodeUtil.getAsOneNumber(
+                reverse(ListNodeUtil.getValuesAsOneString(
                         new AddTwoNumbers().addTwoNumbers(
                                 testObjectGenerator.create(2, 4, 3),
                                 testObjectGenerator.create(5, 6, 4)
@@ -28,7 +28,7 @@ class AddTwoNumbersTest {
     @Test
     void overflowCausesCreationOfNewListNode() {
         assertEquals(1110,
-                reverseNumber(ListNodeUtil.getAsOneNumber(
+                reverse(ListNodeUtil.getValuesAsOneString(
                         new AddTwoNumbers().addTwoNumbers(
                                 testObjectGenerator.create(9, 9, 9),
                                 testObjectGenerator.create(1, 1, 1)
@@ -38,10 +38,10 @@ class AddTwoNumbersTest {
         );
     }
 
-    private int reverseNumber(int numberToReverse) {
+    private int reverse(String stringToReverse) {
         return Integer.parseInt(
                 new StringBuilder(
-                        String.valueOf(numberToReverse)
+                        String.valueOf(stringToReverse)
                 ).reverse().toString()
         );
     }
