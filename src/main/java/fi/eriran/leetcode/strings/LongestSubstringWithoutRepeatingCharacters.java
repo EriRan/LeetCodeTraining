@@ -1,7 +1,7 @@
 package fi.eriran.leetcode.strings;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Given a string s, find the length of the longest substring without repeating characters.
@@ -15,12 +15,15 @@ public class LongestSubstringWithoutRepeatingCharacters {
             return 1;
         }
         int longestSubstringSize = 0;
-        Set<Character> encounteredCharacters = new HashSet<>();
-        for (char currentChar : string.toCharArray()) {
-            if (!encounteredCharacters.contains(currentChar)) {
-                encounteredCharacters.add(currentChar);
+        Map<Character, Integer> encounteredCharacters = new HashMap<>();
+        char[] charArray = string.toCharArray();
+        for (int i = 0, charArrayLength = charArray.length; i < charArrayLength; i++) {
+            char currentChar = charArray[i];
+            if (!encounteredCharacters.containsKey(currentChar)) {
+                encounteredCharacters.put(currentChar, i);
             } else {
                 longestSubstringSize = attemptToChangeLongest(longestSubstringSize, encounteredCharacters.size());
+                i = encounteredCharacters.get(currentChar);
                 encounteredCharacters.clear();
             }
         }
