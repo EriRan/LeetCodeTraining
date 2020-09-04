@@ -29,4 +29,10 @@ class LongestSubstringWithoutRepeatingCharactersTest {
         assertEquals(0, new LongestSubstringWithoutRepeatingCharacters()
                 .lengthOfLongestSubstring(""));
     }
+
+    @Test
+    void submissionTest1() {
+        assertEquals(2, new LongestSubstringWithoutRepeatingCharacters()
+                .lengthOfLongestSubstring("aab"));
+    }
 }
