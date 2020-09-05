@@ -26,4 +26,14 @@ class LargestTimeForGivenDigitsTest {
     void example4() {
         assertEquals("10:00", new LargestTimeForGivenDigits().largestTimeFromDigits(new int[]{0, 0, 1, 0}));
     }
+
+    @Test
+    void numbersForMaxTime() {
+        assertEquals("23:59", new LargestTimeForGivenDigits().largestTimeFromDigits(new int[]{5, 2, 9, 3}));
+    }
+
+    @Test
+    void numbersForMinTime() {
+        assertEquals("00:00", new LargestTimeForGivenDigits().largestTimeFromDigits(new int[]{0, 0, 0, 0}));
+    }
 }
