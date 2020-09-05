@@ -23,17 +23,17 @@ public class TreeNodeTestUtil {
     private static void placeNode(TreeNode currentNode, int number) {
         switch (Integer.compare(currentNode.val, number)) {
             case 1:
-                if (currentNode.right == null) {
-                    currentNode.right = new TreeNode(number);
-                } else {
-                    placeNode(currentNode.right, number);
-                }
-                break;
-            case -1:
                 if (currentNode.left == null) {
                     currentNode.left = new TreeNode(number);
                 } else {
                     placeNode(currentNode.left, number);
+                }
+                break;
+            case -1:
+                if (currentNode.right == null) {
+                    currentNode.right = new TreeNode(number);
+                } else {
+                    placeNode(currentNode.right, number);
                 }
                 break;
             case 0:
