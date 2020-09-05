@@ -13,10 +13,12 @@ public class LargestTimeForGivenDigits {
         //index 4 allows anything
         StringBuilder clockTimeBuilder = new StringBuilder();
         Set<Integer> usedIndexes = new TreeSet<>();
-        Integer hourOneIndex = findLargestPossible(array, clockTimeBuilder, 2, usedIndexes);
-        if (hourOneIndex == null) {
-            return "";
-        }
+
+        //Does it contain 2 and 0,1,2,3
+        //Is 2 usable
+
+        Integer hourOneIndex = findLargestFirstHour(array, clockTimeBuilder, usedIndexes);
+        if (hourOneIndex == null) return "";
         usedIndexes.add(hourOneIndex);
         Integer hourTwoIndex = findLargestSecondHour(array, clockTimeBuilder, usedIndexes, array[hourOneIndex]);
         if (hourTwoIndex == null) {
@@ -37,6 +39,14 @@ public class LargestTimeForGivenDigits {
         return clockTimeBuilder.toString();
     }
 
+    private Integer findLargestFirstHour(int[] array, StringBuilder clockTimeBuilder, Set<Integer> usedIndexes) {
+
+        if (is2Usable(array)) {
+            return findLargestPossible(array, clockTimeBuilder, 2, usedIndexes);
+        }
+        return findLargestPossible(array, clockTimeBuilder, 1, usedIndexes);
+    }
+
     private Integer findLargestSecondHour(int[] array,
                                           StringBuilder clockTimeBuilder,
                                           Set<Integer> usedIndexes,
@@ -46,6 +56,24 @@ public class LargestTimeForGivenDigits {
         } else {
             return findLargestPossible(array, clockTimeBuilder, 9, usedIndexes);
         }
+    }
+
+    private boolean is2Usable(int[] array) {
+        //Does it have 2
+        //Does it have one more number that is less than 4 and one more less than 6
+        boolean hasTwo = false;
+        boolean hasLessThanFour = false;
+        boolean hasLessThanSix = false;
+        for (int number : array) {
+            if (!hasTwo && number == 2) {
+                hasTwo = true;
+            } else if (!hasLessThanFour && number < 4) {
+                hasLessThanFour = true;
+            } else if (number < 6) {
+                hasLessThanSix = true;
+            }
+        }
+        return hasTwo && hasLessThanFour && hasLessThanSix;
     }
 
     private Integer findLargestPossible(int[] array,
