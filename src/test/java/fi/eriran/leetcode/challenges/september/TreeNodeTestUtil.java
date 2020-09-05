@@ -7,7 +7,7 @@ public class TreeNodeTestUtil {
 
     public static TreeNode createBinarySearchTree(Integer[] ints) {
         if (ints == null || ints.length == 0) {
-            return new TreeNode();
+            return null;
         }
         TreeNode root = new TreeNode(ints[0]);
         for (int i = 1; i < ints.length; i++) {
