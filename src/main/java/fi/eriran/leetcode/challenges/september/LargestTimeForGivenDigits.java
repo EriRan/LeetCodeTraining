@@ -18,7 +18,7 @@ public class LargestTimeForGivenDigits {
             return "";
         }
         usedIndexes.add(hourOneIndex);
-        Integer hourTwoIndex = findLargestPossible(array, clockTimeBuilder, 3, usedIndexes);
+        Integer hourTwoIndex = findLargestSecondHour(array, clockTimeBuilder, usedIndexes, array[hourOneIndex]);
         if (hourTwoIndex == null) {
             return "";
         }
@@ -35,6 +35,17 @@ public class LargestTimeForGivenDigits {
         }
         usedIndexes.add(minuteTwoIndex);
         return clockTimeBuilder.toString();
+    }
+
+    private Integer findLargestSecondHour(int[] array,
+                                          StringBuilder clockTimeBuilder,
+                                          Set<Integer> usedIndexes,
+                                          int hourOneValue) {
+        if (hourOneValue == 2) {
+            return findLargestPossible(array, clockTimeBuilder, 3, usedIndexes);
+        } else {
+            return findLargestPossible(array, clockTimeBuilder, 9, usedIndexes);
+        }
     }
 
     private Integer findLargestPossible(int[] array,
@@ -62,5 +73,4 @@ public class LargestTimeForGivenDigits {
         }
         return maxPossibleIndex;
     }
-
 }
