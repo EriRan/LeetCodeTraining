@@ -7,15 +7,8 @@ public class LargestTimeForGivenDigits {
 
     public String largestTimeFromDigits(int[] array) {
         //We must have at least one 0, 1 or 2 for this this to work
-        //index 1 allowed: 0,1,2
-        //index 2 allowed: 0,1,2,3
-        //index 3 allowed: 0,1,2,3,4,5
-        //index 4 allows anything
         StringBuilder clockTimeBuilder = new StringBuilder();
         Set<Integer> usedIndexes = new TreeSet<>();
-
-        //Does it contain 2 and 0,1,2,3
-        //Is 2 usable
 
         Integer hourOneIndex = findLargestFirstHour(array, clockTimeBuilder, usedIndexes);
         if (hourOneIndex == null) return "";
@@ -60,7 +53,8 @@ public class LargestTimeForGivenDigits {
 
     private boolean is2Usable(int[] array) {
         //Does it have 2
-        //Does it have one more number that is less than 4 and one more less than 6
+        //and does it have one more number that is less than 4 for the second hour
+        // and one more less than 6 for the first minute
         boolean hasTwo = false;
         boolean hasLessThanFour = false;
         boolean hasLessThanSix = false;
