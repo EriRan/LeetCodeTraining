@@ -41,4 +41,9 @@ class LargestTimeForGivenDigitsTest {
     void submissionTest1() {
         assertEquals("04:00", new LargestTimeForGivenDigits().largestTimeFromDigits(new int[]{0, 4, 0, 0}));
     }
+
+    @Test
+    void submissionTest2() {
+        assertEquals("06:26", new LargestTimeForGivenDigits().largestTimeFromDigits(new int[]{2, 0, 6, 6}));
+    }
 }
