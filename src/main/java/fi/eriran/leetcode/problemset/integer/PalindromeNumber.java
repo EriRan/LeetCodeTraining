@@ -15,13 +15,13 @@ public class PalindromeNumber {
             return false;
         }
 
-        int[] reversedNumbers = createNumberArray(number);
+        int[] numberArray = createNumberArray(number);
 
         int leftPointer = 0;
-        int rightPointer = reversedNumbers.length - 1;
+        int rightPointer = numberArray.length - 1;
 
         while (leftPointer <= rightPointer) {
-            if (reversedNumbers[leftPointer] != reversedNumbers[rightPointer]) {
+            if (numberArray[leftPointer] != numberArray[rightPointer]) {
                 return false;
             }
             leftPointer++;
