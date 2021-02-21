@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class ImageOverlapTest {
 
     @Test
-    @Disabled
+    @Disabled("Implementation unfinished")
     void example1() {
         assertEquals(3, new ImageOverlap()
                 .largestOverlap(
