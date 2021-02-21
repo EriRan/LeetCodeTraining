@@ -1,4 +1,4 @@
-package fi.eriran.leetcode.problemset.arrays.nsum;
+package fi.eriran.leetcode.problemset.array.nsum;
 
 /**
  * Given an array of integers, return indices of the two numbers such that they add up to a specific target.

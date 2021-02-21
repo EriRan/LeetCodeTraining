@@ -1,4 +1,4 @@
-package fi.eriran.leetcode.problemset.arrays.nsum;
+package fi.eriran.leetcode.problemset.array.nsum;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.junit.jupiter.api.Test;

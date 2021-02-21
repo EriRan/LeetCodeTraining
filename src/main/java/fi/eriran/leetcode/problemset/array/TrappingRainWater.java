@@ -1,4 +1,4 @@
-package fi.eriran.leetcode.problemset.arrays;
+package fi.eriran.leetcode.problemset.array;
 
 /**
  * Given n non-negative integers representing an elevation map where the width of each bar is 1, compute how much
