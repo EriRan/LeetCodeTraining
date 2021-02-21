@@ -9,10 +9,8 @@ import java.util.stream.Collectors;
 public class MergeIntervals {
 
     public int[][] merge(int[][] intervals) {
-        //Sort into a collection
-        List<int[]> sortedArrayEntries = Arrays.stream(intervals)
-                .sorted(Comparator.comparingInt(arrayEntryOne -> arrayEntryOne[0]))
-                .collect(Collectors.toList());
+        //Sort into a collection based on the first int in the inner array
+        List<int[]> sortedArrayEntries = sortIntoListByFirstEntry(intervals);
         //Temporary variables
         List<int[]> unconvertedResults = new ArrayList<>();
         int[] previousEntry = null;
@@ -43,6 +41,12 @@ public class MergeIntervals {
             unconvertedResults.add(previousEntry);
         }
         return convertIntoResponseArray(unconvertedResults);
+    }
+
+    private List<int[]> sortIntoListByFirstEntry(int[][] intervals) {
+        return Arrays.stream(intervals)
+                .sorted(Comparator.comparingInt(arrayEntry -> arrayEntry[0]))
+                .collect(Collectors.toList());
     }
 
     private int[][] convertIntoResponseArray(List<int[]> unconvertedResults) {
