@@ -1,5 +1,6 @@
 package fi.eriran.leetcode.problemset.arrays;
 
+import fi.eriran.leetcode.problemset.matrix.MergeIntervals;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;

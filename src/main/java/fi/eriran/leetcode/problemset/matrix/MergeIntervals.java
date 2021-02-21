@@ -1,4 +1,4 @@
-package fi.eriran.leetcode.problemset.arrays;
+package fi.eriran.leetcode.problemset.matrix;
 
 import java.util.ArrayList;
 import java.util.Arrays;
