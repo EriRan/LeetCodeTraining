@@ -13,10 +13,12 @@ public class MergeIntervals {
         List<int[]> sortedArrayEntries = Arrays.stream(intervals)
                 .sorted(Comparator.comparingInt(arrayEntryOne -> arrayEntryOne[0]))
                 .collect(Collectors.toList());
+        //Temporary variables
         List<int[]> unconvertedResults = new ArrayList<>();
-
         int[] previousEntry = null;
 
+        //Iterate through the array entries. Keep storing the previous one. Previous one holds the combined entries
+        // so far
         for (int[] currentArrayEntry : sortedArrayEntries) {
             if (previousEntry == null) {
                 previousEntry = currentArrayEntry;
@@ -33,7 +35,9 @@ public class MergeIntervals {
                 }
             }
         }
-        //Was the last entry added?
+        //Was the last previousEntry added?
+        //If the results are empty, it was not added.
+        //If the last entry in the results is equal to the previous, then it was added
         if (unconvertedResults.isEmpty()
                 || !Arrays.equals(unconvertedResults.get(unconvertedResults.size() - 1), previousEntry)) {
             unconvertedResults.add(previousEntry);
