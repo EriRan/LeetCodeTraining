@@ -1,4 +1,4 @@
-package fi.eriran.leetcode.problemset.strings;
+package fi.eriran.leetcode.problemset.string;
 
 /**
  * Given an input string (s) and a pattern (p), implement regular expression matching with support for '.' and '*'.

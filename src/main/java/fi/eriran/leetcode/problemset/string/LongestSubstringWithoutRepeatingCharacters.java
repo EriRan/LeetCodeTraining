@@ -1,4 +1,4 @@
-package fi.eriran.leetcode.problemset.strings;
+package fi.eriran.leetcode.problemset.string;
 
 import java.util.HashMap;
 import java.util.Map;

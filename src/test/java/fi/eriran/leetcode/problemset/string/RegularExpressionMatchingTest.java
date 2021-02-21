@@ -1,4 +1,4 @@
-package fi.eriran.leetcode.problemset.strings;
+package fi.eriran.leetcode.problemset.string;
 
 import org.junit.jupiter.api.Test;
 

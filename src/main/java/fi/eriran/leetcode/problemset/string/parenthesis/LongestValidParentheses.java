@@ -1,4 +1,4 @@
-package fi.eriran.leetcode.problemset.strings.parenthesis;
+package fi.eriran.leetcode.problemset.string.parenthesis;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
