@@ -56,6 +56,25 @@ class RotateListTest {
         }
     }
 
+    @Test
+    void singleRotationWith2Nodes() {
+        ListNode currentNode = new RotateList()
+                .rotateRight(new ListNodeTestObjectGenerator().create(1,2), 2);
+        for (int i = 0; i < 2; i++) {
+            switch (i) {
+                case 0:
+                    assertEquals(1, currentNode.val);
+                    break;
+                case 1:
+                    assertEquals(2, currentNode.val);
+                    break;
+                default:
+                    throw new IllegalStateException("Unexpected index");
+            }
+            currentNode = currentNode.next;
+        }
+    }
+
     /**
      * If the amount of rotates can be divided with a modulo of zero, the rotation will not change the node at all.
      */
