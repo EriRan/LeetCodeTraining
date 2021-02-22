@@ -62,26 +62,20 @@ class RotateListTest {
     @Test
     void hugeNumberOfRotatesSkipped() {
         ListNode currentNode = new RotateList()
-                .rotateRight(new ListNodeTestObjectGenerator().create(1, 2, 3, 4, 5), 2000000000);
-        for (int i = 0; i < 5; i++) {
+                .rotateRight(new ListNodeTestObjectGenerator().create(1, 2, 3), 2000000000);
+        for (int i = 0; i < 3; i++) {
             switch (i) {
                 case 0:
-                    assertEquals(1, currentNode.val);
-                    break;
-                case 1:
                     assertEquals(2, currentNode.val);
                     break;
-                case 2:
+                case 1:
                     assertEquals(3, currentNode.val);
                     break;
-                case 3:
-                    assertEquals(4, currentNode.val);
-                    break;
-                case 4:
-                    assertEquals(5, currentNode.val);
+                case 2:
+                    assertEquals(1, currentNode.val);
                     break;
                 default:
-                    throw new IllegalStateException("Unexpected index");
+                    throw new IllegalStateException("Unexpected index: " + i);
             }
             currentNode = currentNode.next;
         }
