@@ -155,20 +155,5 @@ public class WordLadder {
         public void setVisited(boolean visited) {
             this.visited = visited;
         }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-
-            GraphNode graphNode = (GraphNode) o;
-
-            return value != null ? value.equals(graphNode.value) : graphNode.value == null;
-        }
-
-        @Override
-        public int hashCode() {
-            return value != null ? value.hashCode() : 0;
-        }
     }
 }
