@@ -19,6 +19,9 @@ public class WordLadder {
         if (validateParameters(beginWord, endWord, wordList)) {
             return 0;
         }
+        //If the end word is not in the word list, it is impossible to perform the transformation
+        //Although I guess with beginWord: a, endWord: b, wordlist [a], it would make sense since only one character
+        // has to change but it seems like LeetCode didn't think it this way?
         if (!wordList.contains(endWord)) {
             return 0;
         }
@@ -30,25 +33,30 @@ public class WordLadder {
         return findShortestPath(startNode, endWord);
     }
 
+    /**
+     * Build the graph structure starting from the provided beginWord. The graph nodes connect to each other if their
+     * words have only one different character.
+     * @return The graph structure with the node created from beginWord being the entry point to the graph
+     */
     private GraphNode buildGraph(String beginWord, List<String> wordList) {
         //Create start node
         GraphNode startNode = new GraphNode(beginWord);
         Map<String, GraphNode> allNodes = new HashMap<>();
         allNodes.put(startNode.getValue(), startNode);
-        findConnections(startNode, wordList, allNodes);
+        buildConnections(startNode, wordList, allNodes);
         return startNode;
     }
 
-    private void findConnections(GraphNode currentNode,
-                                 List<String> wordList,
-                                 Map<String, GraphNode> allNodes) {
+    private void buildConnections(GraphNode currentNode,
+                                  List<String> wordList,
+                                  Map<String, GraphNode> allNodes) {
         for (String word : wordList) {
             if (isOnlyOneCharacterDifferent(currentNode.getValue(), word)) {
                 if (!allNodes.containsKey(word)) {
                     GraphNode newNode = new GraphNode(word);
                     allNodes.put(newNode.getValue(), newNode);
                     currentNode.getConnections().add(newNode);
-                    findConnections(newNode, wordList, allNodes);
+                    buildConnections(newNode, wordList, allNodes);
                 } else {
                     GraphNode existingNode = allNodes.get(word);
                     currentNode.getConnections().add(existingNode);
@@ -92,6 +100,9 @@ public class WordLadder {
     }
 
     private boolean isOnlyOneCharacterDifferent(String wordOne, String wordTwo) {
+        if (wordOne.length() == 1) {
+            return true;
+        }
         boolean hasOnlyOneDifferentCharacter = false;
         for (int i = 0; i < wordOne.length(); i++) {
             boolean areCharactersDifferent = wordOne.charAt(i) != wordTwo.charAt(i);
@@ -112,7 +123,7 @@ public class WordLadder {
         return beginWord == null || endWord == null || wordList == null || wordList.isEmpty();
     }
 
-    class GraphNode {
+    static class GraphNode {
 
         private String value;
         private boolean visited;
