@@ -24,7 +24,7 @@ class WordLadderTest {
     @Test
     void example2() {
         assertEquals(
-                5,
+                0,
                 new WordLadder()
                         .ladderLength(
                                 "hit",
