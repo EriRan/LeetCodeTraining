@@ -1,6 +1,6 @@
 package fi.eriran.leetcode.problemset.string;
 
-import java.util.List;
+import java.util.*;
 
 /**
  * A transformation sequence from word beginWord to word endWord using a dictionary wordList is a sequence of words such that:
@@ -22,7 +22,40 @@ public class WordLadder {
         if (!wordList.contains(endWord)) {
             return 0;
         }
+
+        GraphNode startNode = buildGraph(beginWord, wordList);
+        if (startNode.getConnections().isEmpty()) {
+            return 0;
+        }
         return 0;
+    }
+
+    private GraphNode buildGraph(String beginWord, List<String> wordList) {
+        //Create start node
+        GraphNode startNode = new GraphNode(beginWord);
+        Map<String, GraphNode> allNodes = new HashMap<>();
+        findConnections(startNode, wordList, allNodes);
+        return startNode;
+    }
+
+    private void findConnections(GraphNode currentNode,
+                                 List<String> wordList,
+                                 Map<String, GraphNode> allNodes) {
+        for (String word : wordList) {
+            if (isOnlyOneCharacterDifferent(currentNode.getValue(), word)) {
+                if (!allNodes.containsKey(word)) {
+                    GraphNode newNode = new GraphNode(word);
+                    allNodes.put(newNode.getValue(), newNode);
+                    currentNode.getConnections().add(newNode);
+                    findConnections(newNode, wordList, allNodes);
+                } else {
+                    GraphNode existingNode = allNodes.get(word);
+                    allNodes.put(existingNode.getValue(), existingNode);
+                    currentNode.getConnections().add(existingNode);
+                }
+            }
+        }
+
     }
 
     private boolean isOnlyOneCharacterDifferent(String wordOne, String wordTwo) {
@@ -44,5 +77,35 @@ public class WordLadder {
 
     private boolean validateParameters(String beginWord, String endWord, List<String> wordList) {
         return beginWord == null || endWord == null || wordList == null || wordList.isEmpty();
+    }
+
+    class GraphNode {
+
+        private String value;
+        private boolean visited;
+        private List<GraphNode> connections;
+
+        public GraphNode() {
+            visited = false;
+            connections = new ArrayList<>();
+        }
+
+        public GraphNode(String value) {
+            this.value = value;
+            visited = false;
+            connections = new ArrayList<>();
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public boolean isVisited() {
+            return visited;
+        }
+
+        public List<GraphNode> getConnections() {
+            return connections;
+        }
     }
 }
