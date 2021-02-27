@@ -19,41 +19,10 @@ public class WordLadder {
         if (validateParameters(beginWord, endWord, wordList)) {
             return 0;
         }
-        //I really don't understand this, but example seems to have this as a condition. Adjacency doesn't seem to
-        // matter for it.
         if (!wordList.contains(endWord)) {
             return 0;
         }
-
-        return followSequence(beginWord, endWord, wordList, 0);
-    }
-
-    private int followSequence(String beginWord, String endWord, List<String> wordList, int startPoint) {
-        boolean firstIteration = true;
-        int shortestFound = 0;
-        for (int i = startPoint; i < wordList.size(); i++) {
-            if (firstIteration) {
-                firstIteration = false;
-                if (!isOnlyOneCharacterDifferent(beginWord, wordList.get(i))) {
-                    return 0;
-                }
-                //Length is now the beginWord + the first iterated word from wordList
-                shortestFound += 2;
-            } else {
-                //Is the current word close enough to endWord? If it is, stop here
-                if (isOnlyOneCharacterDifferent(wordList.get(i), endWord)) {
-                    //Current word + end word
-                    shortestFound += 2;
-                    return shortestFound;
-                }
-                //Is the current word close enough to the previos word? If it is, increment shortestFound int
-                if (!isOnlyOneCharacterDifferent(wordList.get(i - 1), wordList.get(i))) {
-                    return 0;
-                }
-                shortestFound++;
-            }
-        }
-        return shortestFound;
+        return 0;
     }
 
     private boolean isOnlyOneCharacterDifferent(String wordOne, String wordTwo) {
