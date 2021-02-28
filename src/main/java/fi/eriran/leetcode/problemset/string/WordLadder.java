@@ -130,14 +130,9 @@ public class WordLadder {
 
     static class GraphNode {
 
-        private String value;
+        private final String value;
         private boolean visited;
         private final List<GraphNode> connections;
-
-        public GraphNode() {
-            visited = false;
-            connections = new ArrayList<>();
-        }
 
         public GraphNode(String value) {
             this.value = value;
