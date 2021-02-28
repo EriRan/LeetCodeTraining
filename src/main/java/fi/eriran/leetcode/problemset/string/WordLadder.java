@@ -69,7 +69,7 @@ public class WordLadder {
         Deque<GraphNode> deque = new ArrayDeque<>();
         startNode.setVisited(true);
         deque.add(startNode);
-        Map<String, String> pathMap = createPathMap(deque);
+        Map<String, String> pathMap = createPathMap(deque, endWord);
         if (!pathMap.containsKey(endWord)) {
             return 0;
         }
@@ -84,7 +84,7 @@ public class WordLadder {
         return shortestPathLength;
     }
 
-    private Map<String, String> createPathMap(Deque<GraphNode> deque) {
+    private Map<String, String> createPathMap(Deque<GraphNode> deque, String endWord) {
         Map<String, String> pathMap = new HashMap<>();
         while (!deque.isEmpty()) {
             GraphNode currentNode = deque.removeFirst();
@@ -93,6 +93,11 @@ public class WordLadder {
                     deque.addLast(neighbour);
                     neighbour.setVisited(true);
                     pathMap.put(neighbour.getValue(), currentNode.getValue());
+                    //We discovered the path to the end word. Stop map creation. Rest of the graph does not have to
+                    // be iterated.
+                    if (endWord.equals(neighbour.getValue())) {
+                        return pathMap;
+                    }
                 }
             }
         }
