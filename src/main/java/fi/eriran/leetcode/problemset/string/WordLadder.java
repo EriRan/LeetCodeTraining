@@ -12,6 +12,9 @@ import java.util.*;
  * <p>
  * Given two words, beginWord and endWord, and a dictionary wordList, return the number of words in the
  * shortest transformation sequence from beginWord to endWord, or 0 if no such sequence exists.
+ *
+ * There is a sequel for this problem, where you have to find all available paths with the shortest length. It needs
+ * some kind of Breadth Search First and Depth Search First combination.
  */
 public class WordLadder {
 
